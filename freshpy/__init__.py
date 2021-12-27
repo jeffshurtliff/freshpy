@@ -9,7 +9,7 @@
 
 from .utils import version
 
-__all__ = []
+__all__ = ['core']
 
 # Define the package version by pulling from the freshpy.utils.version module
 __version__ = version.get_full_version()
