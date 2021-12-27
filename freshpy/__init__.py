@@ -7,9 +7,10 @@
 :Modified Date:     27 Dec 2021
 """
 
+from .core import FreshPy
 from .utils import version
 
-__all__ = ['core']
+__all__ = ['core', 'FreshPy']
 
 # Define the package version by pulling from the freshpy.utils.version module
 __version__ = version.get_full_version()
