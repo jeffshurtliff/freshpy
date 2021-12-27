@@ -7,4 +7,4 @@
 :Modified Date:  27 Dec 2021
 """
 
-__all__ = ['version']
+__all__ = ['log_utils', 'version']
