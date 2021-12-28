@@ -4,7 +4,7 @@
 :Synopsis:          This module handles interactions with the Freshservice REST API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     27 Dec 2021
+:Modified Date:     28 Dec 2021
 """
 
 import json
@@ -28,7 +28,7 @@ def define_headers():
 
 def define_auth(api_key):
     """This function defines the authentication dictionary to use in API calls."""
-    credentials = {api_key: 'X'}
+    credentials = (api_key, 'X')
     return credentials
 
 
@@ -52,10 +52,14 @@ def get_request_with_retries(fresh_object, uri, headers=None, return_json=True):
     # Construct the credentials dictionary
     credentials = define_auth(fresh_object.api_key)
 
+    # Construct the query URL
+    query_url = fresh_object.base_url + uri
+
+    # Perform the API call
     retries, response = 0, None
     while retries <= 5:
         try:
-            response = requests.get(uri, headers=headers, auth=credentials)
+            response = requests.get(query_url, headers=headers, auth=credentials)
             break
         except Exception as exc_msg:
             # _report_failed_attempt(exc_msg, 'get', retries)
