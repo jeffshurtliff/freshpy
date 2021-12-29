@@ -4,9 +4,10 @@
 :Synopsis:          Defines the core freshpy object used to interface with the Freshservice API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     27 Dec 2021
+:Modified Date:     29 Dec 2021
 """
 
+from . import api
 from .utils import log_utils, version
 
 # Initialize logging
@@ -34,6 +35,22 @@ class FreshPy(object):
 
         # Define the API key
         self.api_key = api_key
+
+    def get(self, uri, headers=None, return_json=True):
+        """This method performs a GET request against the Freshservice API with multiple retries on failure.
+
+        .. versionadded:: 1.0.0
+
+        :param uri: The URI to query
+        :type uri: string
+        :param headers: The HTTP headers to utilize in the REST API call
+        :type headers: dict, None
+        :param return_json: Determines if JSON data should be returned
+        :type return_json: bool
+        :returns: The JSON data from the response or the raw :py:mod:`requests` response.
+        :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+        """
+        return api.get_request_with_retries(self, uri, headers, return_json)
 
     def __del__(self):
         """This method fully destroys the instance.
