@@ -4,7 +4,7 @@
 :Synopsis:          This module handles interactions with the Freshservice REST API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     28 Dec 2021
+:Modified Date:     29 Dec 2021
 """
 
 import json
@@ -28,7 +28,10 @@ def define_headers():
 
 
 def define_auth(api_key):
-    """This function defines the authentication dictionary to use in API calls."""
+    """This function defines the authentication dictionary to use in API calls.
+
+    .. versionadded:: 1.0.0
+    """
     credentials = (api_key, 'X')
     return credentials
 
@@ -46,6 +49,7 @@ def get_request_with_retries(fresh_object, uri, headers=None, return_json=True):
     :param return_json: Determines if JSON data should be returned
     :type return_json: bool
     :returns: The JSON data from the response or the raw :py:mod:`requests` response.
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
     """
     # Define headers if not supplied
     headers = define_headers() if not headers else headers
