@@ -1,4 +1,6 @@
-<img src="docs/freshpy-logo-w100.png" width="100" />
+<a href='https://pypi.org/project/freshpy/'>
+    <img src="docs/freshpy-logo-w100.png" width="100" />
+</a>
 
 # freshpy
 A Python toolset for utilizing the Freshservice API
