@@ -130,7 +130,7 @@ You may also clone the repository and install from source using below.
 
 ```sh
 git clone git://github.com/jeffshurtliff/freshpy.git
-cd khoros/
+cd freshpy/
 python setup.py install
 ```
 
