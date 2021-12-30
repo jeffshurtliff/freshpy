@@ -330,3 +330,25 @@ class PUTRequestError(FreshPyError):
         elif not (args or kwargs):
             args = (default_msg,)
         super().__init__(*args)
+
+
+####################
+# Ticket Exceptions
+####################
+
+
+class InvalidPredefinedFilterError(FreshPyError):
+    """This exception is used when the API query could not be completed due to connection aborts and/or timeouts.
+
+    .. versionadded:: 1.0.0
+    """
+    def __init__(self, *args, **kwargs):
+        """This method defines the default or custom message for the exception."""
+        default_msg = "An invalid predefined filter was provided."
+        custom_msg = "The provided filter 'X' is not a valid predefined filter."
+        if not (args or kwargs):
+            args = (default_msg,)
+        elif 'value' in kwargs:
+            custom_msg = custom_msg.replace('X', kwargs['value'])
+            args = (custom_msg,)
+        super().__init__(*args)
