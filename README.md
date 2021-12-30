@@ -1,5 +1,5 @@
 <a href='https://pypi.org/project/freshpy/'>
-    <img src="docs/freshpy-logo-w100.png" width="100" />
+    <img src="docs/freshpy-logo.png" width="100" />
 </a>
 
 # freshpy
