@@ -1,3 +1,9 @@
+<img src="docs/freshpy-logo.png" style="max-height: 75px;"/>
+
+# freshpy
+A Python toolset for utilizing the Freshservice API
+
+<!--
 <table style="border: 0;">
     <tr style="border: 0;">
         <td style="border: 0; vertical-align: top;">
@@ -9,6 +15,7 @@
         </td>
     </tr>
 </table>
+-->
 
 <table>
     <tr>
