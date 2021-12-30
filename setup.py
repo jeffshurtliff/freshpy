@@ -38,7 +38,7 @@ def get_version(rel_path):
 with open('README.md', 'r') as fh:
     long_description = fh.read()
 
-version = get_version('freshpy/utils/version.py')
+version = get_version('src/freshpy/utils/version.py')
 
 setuptools.setup(
     name='freshpy',
