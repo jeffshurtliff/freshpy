@@ -1,5 +1,14 @@
-# freshpy
-A Python toolset for utilizing the Freshservice API
+<table style="border: 0;">
+    <tr style="border: 0;">
+        <td style="border: 0; vertical-align: top;">
+            <h1>freshpy</h1>
+            A Python toolset for utilizing the Freshservice API
+        </td>
+        <td style="border: 0; vertical-align: middle;">
+            <img src="docs/freshpy-logo.png" style="max-height: 75px;"/>
+        </td>
+    </tr>
+</table>
 
 <table>
     <tr>
