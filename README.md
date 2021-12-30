@@ -1,4 +1,4 @@
-<img src="docs/freshpy-logo.png" style="max-height: 75px;"/>
+<img src="docs/freshpy-logo-w100.png" style="max-width: 100px;"/>
 
 # freshpy
 A Python toolset for utilizing the Freshservice API
