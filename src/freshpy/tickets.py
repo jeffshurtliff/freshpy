@@ -38,14 +38,19 @@ def get_ticket(freshpy_object, ticket_number, include=None):
     return api.get_request_with_retries(freshpy_object, uri)
 
 
-def get_tickets(include, predefined_filter=None, filters=None, requester_id=None, requester_email=None,
-                ticket_type=None, updated_since=None, ascending=None, descending=None, per_page=None, page=None):
+def get_tickets(freshpy_object, include=None, predefined_filter=None, filters=None, requester_id=None,
+                requester_email=None, ticket_type=None, updated_since=None, ascending=None, descending=None,
+                per_page=None, page=None):
     uri = 'tickets'
     if filters:
+        # TODO: Set up this section
         pass
     else:
         uri += _parse_constraints(_include=include, _predefined_filter=predefined_filter, _requester_id=requester_id,
-                                  ) # TODO: Add the rest
+                                  _requester_email=requester_email, _ticket_type=ticket_type,
+                                  _updated_since=updated_since, _ascending=ascending, _descending=descending,
+                                  _per_page=per_page, _page=page)
+    return api.get_request_with_retries(freshpy_object, uri)
 
 
 def _parse_filters(_filters=None):
