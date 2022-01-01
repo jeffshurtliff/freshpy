@@ -89,7 +89,7 @@ class FreshPy(object):
             """
             return tickets_module.get_ticket(self.freshpy_object, ticket_number, include)
 
-        def get_tickets(self, include=None, predefined_filter=None, filters=None, requester_id=None,
+        def get_tickets(self, include=None, predefined_filter=None, filters=None, filter_logic='AND', requester_id=None,
                         requester_email=None, ticket_type=None, updated_since=None, ascending=None, descending=None,
                         per_page=None, page=None):
             """This method returns a sequence of tickets with optional filters.
@@ -100,7 +100,10 @@ class FreshPy(object):
             :type include: str, tuple, list, set, None
             :param predefined_filter: One of the predefined filters ('new_and_my_open', 'watching', 'spam', 'deleted')
             :type predefined_filter: str, None
-            :param filters:
+            :param filters: Query filter(s) in the form of a structured query string or a dictionary of values
+            :type filters: str, dict, None
+            :param filter_logic: Defines the logic to use as necessary in a filter query string (default is ``AND``)
+            :param requester_id: The numeric ID of a requester
             :param requester_id: The numeric ID of a requester
             :type requester_id: str, int, None
             :param requester_email: The email address of a requester
@@ -122,9 +125,10 @@ class FreshPy(object):
                      :py:exc:`freshpy.errors.exceptions.APIConnectionError`
             """
             return tickets_module.get_tickets(self.freshpy_object, include=include, predefined_filter=predefined_filter,
-                                              filters=filters, requester_id=requester_id, per_page=per_page, page=page,
-                                              requester_email=requester_email, ticket_type=ticket_type,
-                                              updated_since=updated_since, ascending=ascending, descending=descending)
+                                              filters=filters, filter_logic=filter_logic, requester_id=requester_id,
+                                              per_page=per_page, page=page, requester_email=requester_email,
+                                              ticket_type=ticket_type, updated_since=updated_since, ascending=ascending,
+                                              descending=descending)
 
     def __del__(self):
         """This method fully destroys the instance.
