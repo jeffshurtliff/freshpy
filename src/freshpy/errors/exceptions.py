@@ -337,6 +337,23 @@ class PUTRequestError(FreshPyError):
 ####################
 
 
+class InvalidFilterLogicError(FreshPyError):
+    """This exception is used when an invalid filter logic operator is supplied.
+
+    .. versionadded:: 1.0.0
+    """
+    def __init__(self, *args, **kwargs):
+        """This method defines the default or custom message for the exception."""
+        default_msg = "An invalid filter logic operator was provided."
+        custom_msg = "The filter logic operator 'X' is invalid."
+        if not (args or kwargs):
+            args = (default_msg,)
+        elif 'value' in kwargs:
+            custom_msg = custom_msg.replace('X', kwargs['value'])
+            args = (custom_msg,)
+        super().__init__(*args)
+
+
 class InvalidPredefinedFilterError(FreshPyError):
     """This exception is used when the API query could not be completed due to connection aborts and/or timeouts.
 

@@ -4,7 +4,7 @@
 :Synopsis:          Defines the core freshpy object used to interface with the Freshservice API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     30 Dec 2021
+:Modified Date:     31 Dec 2021
 """
 
 from . import api
@@ -76,7 +76,7 @@ class FreshPy(object):
             self.freshpy_object = freshpy_object
 
         def get_ticket(self, ticket_number, include=None):
-            """This function returns the data for a specific ticket.
+            """This method returns the data for a specific ticket.
 
             .. versionadded:: 1.0.0
 
@@ -88,6 +88,43 @@ class FreshPy(object):
             :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
             """
             return tickets_module.get_ticket(self.freshpy_object, ticket_number, include)
+
+        def get_tickets(self, include=None, predefined_filter=None, filters=None, requester_id=None,
+                        requester_email=None, ticket_type=None, updated_since=None, ascending=None, descending=None,
+                        per_page=None, page=None):
+            """This method returns a sequence of tickets with optional filters.
+
+            .. versionadded:: 1.0.0
+
+            :param include: A string or iterable of `embedding <https://api.freshservice.com/#view_a_ticket>`_ options
+            :type include: str, tuple, list, set, None
+            :param predefined_filter: One of the predefined filters ('new_and_my_open', 'watching', 'spam', 'deleted')
+            :type predefined_filter: str, None
+            :param filters:
+            :param requester_id: The numeric ID of a requester
+            :type requester_id: str, int, None
+            :param requester_email: The email address of a requester
+            :type requester_email: str, None
+            :param ticket_type: The type of ticket (e.g. ``Incident``, ``Service Request``, etc.)
+            :type ticket_type: str, None
+            :param updated_since: A threshold date or timestamp (in UTC format) for when the ticket was last updated
+            :type updated_since: str, None
+            :param ascending: Determines if the tickets should be sorted in *ascending* order
+            :type ascending: bool, None
+            :param descending: Determines if the tickets should be sorted in *descending* order (default)
+            :type descending: bool, None
+            :param per_page: Displays a certain number of results per query
+            :type per_page: str, int, None
+            :param page: Returns a specific page number (used for paginated results)
+            :type page: str, int, None
+            :returns: A list of JSON objects for tickets
+            :raises: :py:exc:`freshpy.errors.exceptions.InvalidPredefinedFilterError`,
+                     :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+            """
+            return tickets_module.get_tickets(self.freshpy_object, include=include, predefined_filter=predefined_filter,
+                                              filters=filters, requester_id=requester_id, per_page=per_page, page=page,
+                                              requester_email=requester_email, ticket_type=ticket_type,
+                                              updated_since=updated_since, ascending=ascending, descending=descending)
 
     def __del__(self):
         """This method fully destroys the instance.
