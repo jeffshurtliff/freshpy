@@ -4,10 +4,10 @@
 :Synopsis:          Defines the core freshpy object used to interface with the Freshservice API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     31 Dec 2021
+:Modified Date:     01 Jan 2022
 """
 
-from . import api
+from . import api, errors
 from . import tickets as tickets_module
 from .utils import log_utils, version
 
@@ -25,6 +25,10 @@ class FreshPy(object):
         """
         # Define the current version
         self.version = version.get_full_version()
+
+        # Raise an exception if the domain and API key were not supplied
+        if not domain or not api_key:
+            raise errors.exceptions.MissingRequiredDataError('init')
 
         # Define the domain
         domain = f'https://{domain}' if domain and not domain.startswith('http') else domain
