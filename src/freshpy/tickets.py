@@ -4,7 +4,7 @@
 :Synopsis:          Functions for interacting with Freshservice tickets
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     31 Dec 2021
+:Modified Date:     01 Jan 2022
 """
 
 from . import api, errors
@@ -77,7 +77,7 @@ def get_tickets(freshpy_object, include=None, predefined_filter=None, filters=No
     """
     uri = 'tickets'
     if filters:
-        uri += _parse_filters(filters)
+        uri += _parse_filters(filters, filter_logic)
     else:
         uri += _parse_constraints(_include=include, _predefined_filter=predefined_filter, _requester_id=requester_id,
                                   _requester_email=requester_email, _ticket_type=ticket_type,
