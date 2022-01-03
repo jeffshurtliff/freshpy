@@ -10,7 +10,7 @@ A Python toolset for utilizing the Freshservice API
         <td>Latest Stable Release</td>
         <td>
             <a href='https://pypi.org/project/freshpy/'>
-                <img alt="PyPI" src="https://img.shields.io/pypi/v/fresphy">
+                <img alt="PyPI" src="https://img.shields.io/pypi/v/freshpy">
             </a>
         </td>
     </tr>
