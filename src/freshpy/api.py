@@ -4,7 +4,7 @@
 :Synopsis:          This module handles interactions with the Freshservice REST API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     29 Dec 2021
+:Modified Date:     04 Jan 2022
 """
 
 import json
@@ -36,8 +36,11 @@ def define_auth(api_key):
     return credentials
 
 
-def get_request_with_retries(fresh_object, uri, headers=None, return_json=True):
+def get_request_with_retries(fresh_object, uri, headers=None, return_json=True, verify_ssl=True):
     """This function performs a GET request and will retry several times if a failure occurs.
+
+    .. versionchanged:: 1.1.0
+       Added the ability to disable SSL verification on API calls.
 
     .. versionadded:: 1.0.0
 
@@ -48,6 +51,8 @@ def get_request_with_retries(fresh_object, uri, headers=None, return_json=True):
     :type headers: dict, None
     :param return_json: Determines if JSON data should be returned
     :type return_json: bool
+    :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+    :type verify_ssl: bool
     :returns: The JSON data from the response or the raw :py:mod:`requests` response.
     :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
     """
@@ -64,7 +69,7 @@ def get_request_with_retries(fresh_object, uri, headers=None, return_json=True):
     retries, response = 0, None
     while retries <= 5:
         try:
-            response = requests.get(query_url, headers=headers, auth=credentials)
+            response = requests.get(query_url, headers=headers, auth=credentials, verify=verify_ssl)
             break
         except Exception as exc_msg:
             _report_failed_attempt(exc_msg, 'get', retries)
@@ -82,7 +87,7 @@ def _report_failed_attempt(_exc_msg, _request_type, _retries):
 
     .. versionadded:: 1.0.0
 
-    :param _exc_msg: The exception that was raised can captured within a try/except clause
+    :param _exc_msg: The exception that was raised within a try/except clause
     :param _request_type: The type of API request (e.g. ``post``, ``put`` or ``get``)
     :type _request_type: str
     :param _retries: The attempt number for the API request

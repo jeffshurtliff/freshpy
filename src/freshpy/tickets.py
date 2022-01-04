@@ -4,7 +4,7 @@
 :Synopsis:          Functions for interacting with Freshservice tickets
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     01 Jan 2022
+:Modified Date:     04 Jan 2022
 """
 
 from . import api, errors
@@ -20,8 +20,11 @@ SUPPORTED_FILTER_FIELDS = ['agent_id', 'group_id', 'priority', 'status', 'impact
 FILTER_LOGIC_OPERATORS = ['AND', 'OR']
 
 
-def get_ticket(freshpy_object, ticket_number, include=None):
+def get_ticket(freshpy_object, ticket_number, include=None, verify_ssl=True):
     """This function returns the data for a specific ticket.
+
+    .. versionchanged:: 1.1.0
+       Added the ability to disable SSL verification on API calls.
 
     .. versionadded:: 1.0.0
 
@@ -31,18 +34,23 @@ def get_ticket(freshpy_object, ticket_number, include=None):
     :type ticket_number: str, int
     :param include: A string or iterable of `embedding <https://api.freshservice.com/#view_a_ticket>`_ options
     :type include: str, tuple, list, set, None
+    :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+    :type verify_ssl: bool
     :returns: JSON data for the given ticket
     :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
     """
     uri = f'tickets/{ticket_number}'
     uri += _parse_constraints(_include=include)
-    return api.get_request_with_retries(freshpy_object, uri)
+    return api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
 
 
 def get_tickets(freshpy_object, include=None, predefined_filter=None, filters=None, filter_logic='AND',
                 requester_id=None, requester_email=None, ticket_type=None, updated_since=None, ascending=None,
-                descending=None, per_page=None, page=None):
+                descending=None, per_page=None, page=None, verify_ssl=True):
     """This function returns a sequence of tickets with optional filters.
+
+    .. versionchanged:: 1.1.0
+       Added the ability to disable SSL verification on API calls.
 
     .. versionadded:: 1.0.0
 
@@ -71,6 +79,8 @@ def get_tickets(freshpy_object, include=None, predefined_filter=None, filters=No
     :type per_page: str, int, None
     :param page: Returns a specific page number (used for paginated results)
     :type page: str, int, None
+    :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+    :type verify_ssl: bool
     :returns: A list of JSON objects for tickets
     :raises: :py:exc:`freshpy.errors.exceptions.InvalidPredefinedFilterError`,
              :py:exc:`freshpy.errors.exceptions.APIConnectionError`
@@ -83,7 +93,7 @@ def get_tickets(freshpy_object, include=None, predefined_filter=None, filters=No
                                   _requester_email=requester_email, _ticket_type=ticket_type,
                                   _updated_since=updated_since, _ascending=ascending, _descending=descending,
                                   _per_page=per_page, _page=page)
-    return api.get_request_with_retries(freshpy_object, uri)
+    return api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
 
 
 def _parse_filters(_filters=None, _logic='AND'):
