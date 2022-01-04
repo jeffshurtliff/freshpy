@@ -4,7 +4,7 @@
 :Synopsis:          Defines the core freshpy object used to interface with the Freshservice API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     01 Jan 2022
+:Modified Date:     04 Jan 2022
 """
 
 from . import api, errors
@@ -51,8 +51,11 @@ class FreshPy(object):
         """
         return FreshPy.Tickets(self)
 
-    def get(self, uri, headers=None, return_json=True):
+    def get(self, uri, headers=None, return_json=True, verify_ssl=True):
         """This method performs a GET request against the Freshservice API with multiple retries on failure.
+
+        .. versionchanged:: 1.1.0
+           Added the ability to disable SSL verification on API calls.
 
         .. versionadded:: 1.0.0
 
@@ -62,10 +65,12 @@ class FreshPy(object):
         :type headers: dict, None
         :param return_json: Determines if JSON data should be returned
         :type return_json: bool
+        :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+        :type verify_ssl: bool
         :returns: The JSON data from the response or the raw :py:mod:`requests` response.
         :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
         """
-        return api.get_request_with_retries(self, uri, headers, return_json)
+        return api.get_request_with_retries(self, uri, headers, return_json, verify_ssl=verify_ssl)
 
     class Tickets(object):
         """This class includes methods associated with Freshservice tickets."""
@@ -79,8 +84,11 @@ class FreshPy(object):
             """
             self.freshpy_object = freshpy_object
 
-        def get_ticket(self, ticket_number, include=None):
+        def get_ticket(self, ticket_number, include=None, verify_ssl=True):
             """This method returns the data for a specific ticket.
+
+            .. versionchanged:: 1.1.0
+               Added the ability to disable SSL verification on API calls.
 
             .. versionadded:: 1.0.0
 
@@ -88,15 +96,20 @@ class FreshPy(object):
             :type ticket_number: str, int
             :param include: A string or iterable of `embedding <https://api.freshservice.com/#view_a_ticket>`_ options
             :type include: str, tuple, list, set, None
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
             :returns: JSON data for the given ticket
             :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
             """
-            return tickets_module.get_ticket(self.freshpy_object, ticket_number, include)
+            return tickets_module.get_ticket(self.freshpy_object, ticket_number, include, verify_ssl=verify_ssl)
 
         def get_tickets(self, include=None, predefined_filter=None, filters=None, filter_logic='AND', requester_id=None,
                         requester_email=None, ticket_type=None, updated_since=None, ascending=None, descending=None,
-                        per_page=None, page=None):
+                        per_page=None, page=None, verify_ssl=True):
             """This method returns a sequence of tickets with optional filters.
+
+            .. versionchanged:: 1.1.0
+               Added the ability to disable SSL verification on API calls.
 
             .. versionadded:: 1.0.0
 
@@ -124,6 +137,8 @@ class FreshPy(object):
             :type per_page: str, int, None
             :param page: Returns a specific page number (used for paginated results)
             :type page: str, int, None
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
             :returns: A list of JSON objects for tickets
             :raises: :py:exc:`freshpy.errors.exceptions.InvalidPredefinedFilterError`,
                      :py:exc:`freshpy.errors.exceptions.APIConnectionError`
@@ -132,7 +147,7 @@ class FreshPy(object):
                                               filters=filters, filter_logic=filter_logic, requester_id=requester_id,
                                               per_page=per_page, page=page, requester_email=requester_email,
                                               ticket_type=ticket_type, updated_since=updated_since, ascending=ascending,
-                                              descending=descending)
+                                              descending=descending, verify_ssl=verify_ssl)
 
     def __del__(self):
         """This method fully destroys the instance.

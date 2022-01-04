@@ -13,7 +13,7 @@ Added
 
 Supporting Modules
 ------------------
-Changes to the :doc:`supporting modules <supporting-modules>`.
+Additions to the :doc:`supporting modules <supporting-modules>`.
 
 * Added the :py:func:`freshpy.utils.version.get_major_minor_version` function.
 
@@ -23,6 +23,15 @@ The documentation was fully created and hosted.
 
 Changed
 =======
+
+Core Object
+-----------
+Changes to the :doc:`core-object-methods`.
+
+* Added the ability to disable SSL verification on API calls in the following methods:
+    * :py:meth:`freshpy.core.FreshPy.get`
+    * :py:meth:`freshpy.core.FreshPy.Tickets.get_ticket`
+    * :py:meth:`freshpy.core.FreshPy.Tickets.get_tickets`
 
 Primary Modules
 ---------------
