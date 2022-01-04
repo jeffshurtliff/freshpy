@@ -67,6 +67,7 @@ A Python toolset for utilizing the Freshservice API
             </a>
         </td>
     </tr>
+    -->
     <tr>
         <td>Documentation</td>
         <td>
@@ -75,6 +76,7 @@ A Python toolset for utilizing the Freshservice API
             </a>
         </td>
     </tr>
+    <!--
     <tr>
         <td>Security Audits</td>
         <td>
@@ -171,6 +173,9 @@ ticket_data = fresh.tickets.get_ticket(1299)
 
 ## License
 [MIT License](https://github.com/jeffshurtliff/freshpy/blob/master/LICENSE)
+
+## Changelog
+Refer to the [changelog](https://freshpy.readthedocs.io/en/latest/changelog.html) for version change information.
 
 ## Reporting Issues
 Issues can be reported within the [GitHub repository](https://github.com/jeffshurtliff/freshpy/issues).
