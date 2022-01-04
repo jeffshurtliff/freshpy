@@ -2,7 +2,7 @@
     <img src="https://github.com/jeffshurtliff/freshpy/blob/main/docs/_static/freshpy-logo.png" width="100" />
 </a>
 
-# freshpy
+# FreshPy
 A Python toolset for utilizing the Freshservice API
 
 <table>
