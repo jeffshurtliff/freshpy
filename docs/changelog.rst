@@ -3,10 +3,17 @@ Change Log
 ##########
 This page documents the additions, changes, fixes, deprecations and removals made in each release.
 
-**********
-v1.1.0dev1
-**********
+********
+v1.1.0b1
+********
 **Release Date: TBD**
+
+Added
+=====
+
+Documentation
+-------------
+The documentation was fully created and hosted.
 
 Changed
 =======
