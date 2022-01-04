@@ -1,0 +1,66 @@
+/* Align the logo in the top-left corner */
+div.sphinxsidebarwrapper p.logo {
+    padding: 0;
+    margin: -20px 0 -10px -10px;
+    text-align: left;
+}
+
+/* Hide the ad widget at the bottom of the page */
+.ethical-alabaster {
+    display: none;
+}
+
+/* Add spacing and a horizontal rule between methods and functions */
+.section dl > dd .py.method,
+.section dl > dd .py.function {
+    margin-top: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Style the Version Added and Version Changed docstrings */
+.versionadded,
+.versionchanged {
+    border: 1px solid #ddd;
+    padding: 0.5em 1em;
+    margin-bottom: 20px;
+
+}
+.versionadded p,
+.versionchanged p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.versionadded {
+    background-color: #e4fae4;
+}
+.versionchanged {
+    background-color: #fffacd;
+}
+
+/* Style the To Do (aka Admonition) boxes */
+div.admonition {
+    border: 1px solid #f8ca66;
+    background-color: #fdeece;
+}
+
+/* Slightly increase the width of the field list labels column */
+dl.field-list > dt {
+    padding-left: 5px;      /* Original: 0.5em */
+}
+
+/* Style the hyperlinks to Python exceptions */
+code.py-exc {
+    color: #aa7708;
+}
+
+/* Style non-exception Python element cross-references */
+code.xref.py.docutils:not(.py-exc) {
+    color: #1263d3;
+}
+
+/* Style the parameter data type cross-references */
+a.reference.external > em {
+    color: #842a8c;
+    font-weight: 500;
+}
