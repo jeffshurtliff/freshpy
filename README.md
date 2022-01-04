@@ -182,7 +182,7 @@ Issues can be reported within the [GitHub repository](https://github.com/jeffshu
 
 ## Additional Resources
 Additional resources for leveraging the Freshservice API can be found in the official
-[Freshservice API Reference Documentation](https://api.freshservice.com/s).
+[Freshservice API Reference Documentation](https://api.freshservice.com/).
 
 ## Donations
 If you would like to donate to this project then you can do so using 
