@@ -11,6 +11,12 @@ v1.1.0b1
 Added
 =====
 
+Supporting Modules
+------------------
+Changes to the :doc:`supporting modules <supporting-modules>`.
+
+* Added the :py:func:`freshpy.utils.version.get_major_minor_version` function.
+
 Documentation
 -------------
 The documentation was fully created and hosted.

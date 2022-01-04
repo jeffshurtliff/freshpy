@@ -17,8 +17,13 @@ __version__ = "1.1.0b1"
 
 
 def get_full_version():
-    """This function returns the current full version of the freshpy package.
+    """This function returns the current full version of the ``freshpy`` package.
 
     .. versionadded:: 1.0.0
     """
     return __version__
+
+
+def get_major_minor_version():
+    """This function returns the current major.minor (i.e. X.Y) version of the ``freshpy`` package."""
+    return ".".join(__version__.split(".")[:2])
