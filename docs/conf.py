@@ -22,7 +22,7 @@ import src.freshpy.utils.version
 
 # -- Project information -----------------------------------------------------
 
-project = 'FreshPy - Freshservice API Python Library'
+project = 'FreshPy Freshservice API Library'
 copyright = '2022, Jeff Shurtliff'
 author = 'Jeff Shurtliff'
 
