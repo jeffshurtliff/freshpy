@@ -4,7 +4,7 @@
 :Synopsis:          This script is the primary configuration file for the freshpy project
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     30 Dec 2021
+:Modified Date:     04 Jan 2022
 """
 
 import setuptools
@@ -50,12 +50,13 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/jeffshurtliff/freshpy",
     project_urls={
+        'Change Log': 'https://freshpy.readthedocs.io/en/latest/changelog.html',
         'Issue Tracker': 'https://github.com/jeffshurtliff/freshpy/issues',
     },
     package_dir={'': 'src'},
     packages=setuptools.find_packages(where='src'),
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
         "Intended Audience :: Information Technology",
         "Intended Audience :: System Administrators",
