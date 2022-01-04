@@ -9,8 +9,12 @@ Table of Contents
 *****************
 
 .. toctree::
+   :maxdepth: 2
 
    changelog
+
+.. toctree::
+
    core-object-methods
    primary-modules
    supporting-modules
