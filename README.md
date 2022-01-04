@@ -1,5 +1,5 @@
 <a href='https://pypi.org/project/freshpy/'>
-    <img src="https://github.com/jeffshurtliff/freshpy/blob/main/docs/freshpy-logo.png" width="100" />
+    <img src="https://github.com/jeffshurtliff/freshpy/blob/main/docs/_static/freshpy-logo.png" width="100" />
 </a>
 
 # freshpy
@@ -18,7 +18,7 @@ A Python toolset for utilizing the Freshservice API
         <td>Latest Dev/Beta/RC Release</td>
         <td>
             <a href='https://pypi.org/project/freshpy/#history'>
-                <img alt="PyPI" src="https://img.shields.io/badge/pypi-1.0.0b1-blue">
+                <img alt="PyPI" src="https://img.shields.io/badge/pypi-1.1.0b1-blue">
             </a>
         </td>
     </tr>
