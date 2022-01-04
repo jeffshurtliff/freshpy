@@ -1,8 +1,11 @@
 /* Align the logo in the top-left corner */
-div.sphinxsidebarwrapper p.logo {
-    padding: 0;
-    margin: -20px 0 -10px -10px;
-    text-align: left;
+div.sphinxsidebarwrapper p.logo img.logo {
+    max-width: 70%;
+}
+
+/* Center the blurb below the logo */
+div.sphinxsidebarwrapper p.blurb {
+    text-align: center;
 }
 
 /* Hide the ad widget at the bottom of the page */
