@@ -95,7 +95,7 @@ html_favicon = '_static/favicon.ico'
 #
 html_theme_options = {
     'logo': 'freshpy-logo.png',
-    'description': 'Freshservice API for Python developers',
+    'description': 'Freshservice API for Python',
     'font_family': 'Arial, sans-serif',
     'head_font_family': 'Arial, sans-serif',
     'github_user': 'jeffshurtliff',
