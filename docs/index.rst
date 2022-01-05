@@ -1,5 +1,5 @@
 ##################################
-FreshPy - Freshservice API Library
+FreshPy Freshservice API Library
 ##################################
 Welcome to the official documentation for the
 `FreshPy Python library <https://pypi.org/project/freshpy>`_.
