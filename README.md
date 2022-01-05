@@ -29,7 +29,7 @@ A Python toolset for utilizing the Freshservice API
             <!--
             <a href="https://github.com/jeffshurtliff/freshpy/blob/master/.github/workflows/pythonpackage.yml">
                 <img alt="GitHub Workflow Status" 
-                src="https://img.shields.io/github/workflow/status/jeffshurtliff/khoros/Python package">
+                src="https://img.shields.io/github/workflow/status/jeffshurtliff/freshpy/Python package">
             </a>
             -->
         </td>
@@ -147,7 +147,7 @@ below.
 from freshpy import FreshPy
 ```
 
-### Initializing a Khoros object instance
+### Initializing a FreshPy object instance
 The primary `FreshPy` object serves many purposes, the most important being to establish a connection to the 
 Freshservice environment with which you intend to interact. As such, when initializing an instance of the `FreshPy` 
 object, you will need to pass it the Freshservice URL (e.g. `example.freshservice.com`) and the API key it will use 
