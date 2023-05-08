@@ -4,7 +4,7 @@
 :Synopsis:          This script is the primary configuration file for the freshpy project
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     04 Jan 2022
+:Modified Date:     08 May 2023
 """
 
 import setuptools
@@ -78,8 +78,8 @@ setuptools.setup(
     python_requires='>=3.6',
     install_requires=[
         "urllib3>=1.26.7",
-        "requests>=2.26.0",
-        "setuptools~=52.0.0"
+        "requests>=2.23.0",
+        "setuptools>=52.0.0"
     ],
     extras_require={
         'sphinx': [
