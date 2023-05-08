@@ -4,7 +4,7 @@
 :Synopsis:          This simple script contains the package version
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     04 Jan 2022
+:Modified Date:     08 May 2023
 """
 
 from . import log_utils
@@ -13,14 +13,11 @@ from . import log_utils
 logger = log_utils.initialize_logging(__name__)
 
 # Define special and global variables
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 
 
 def get_full_version():
-    """This function returns the current full version of the ``freshpy`` package.
-
-    .. versionadded:: 1.0.0
-    """
+    """This function returns the current full version of the ``freshpy`` package."""
     return __version__
 
 
