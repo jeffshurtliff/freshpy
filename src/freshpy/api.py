@@ -36,7 +36,7 @@ def define_auth(api_key):
     return credentials
 
 
-def put_request_with_retries(fresh_object, uri, headers=None, data, return_json=True, verify_ssl=True):
+def put_request_with_retries(fresh_object, uri, data, headers=None, return_json=True, verify_ssl=True):
     """This function performs a POST request and will retry several times if a failure occurs.
 
     :param fresh_object: The instantiated :py:class:`freshpy.core.FreshPy` object.
@@ -78,7 +78,7 @@ def put_request_with_retries(fresh_object, uri, headers=None, data, return_json=
     return response
 
 
-def post_request_with_retries(fresh_object, uri, headers=None, data, return_json=True, verify_ssl=True):
+def post_request_with_retries(fresh_object, uri, data, headers=None, return_json=True, verify_ssl=True):
     """This function performs a POST request and will retry several times if a failure occurs.
 
     :param fresh_object: The instantiated :py:class:`freshpy.core.FreshPy` object.
