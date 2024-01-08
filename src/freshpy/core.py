@@ -3,8 +3,8 @@
 :Module:            freshpy.core
 :Synopsis:          Defines the core freshpy object used to interface with the Freshservice API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     04 Jan 2022
+:Last Modified:     Thejusvi Ganesh
+:Modified Date:     07 Jan 2023
 """
 
 from . import api, errors
@@ -83,6 +83,53 @@ class FreshPy(object):
             :type freshpy_object: class[freshpy.FreshPy]
             """
             self.freshpy_object = freshpy_object
+
+        def close_ticket(self, ticket_number, resolution=None, verify_ssl=True):
+            """This function returns the data for a specific ticket.
+            :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
+            :type freshpy_object: class[freshpy.FreshPy]
+            :param ticket_number: The ticket number for which to return data
+            :type ticket_number: str, int
+            :param resolution: The ticket resolution
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: JSON data for the given ticket
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+            """
+            return tickets_module.close_ticket(self.freshpy_object, ticket_number, resolution, verify_ssl=verify_ssl)
+
+        def ticket_reply(self, ticket_number, body, verify_ssl=True):
+            """This function returns the data for a specific ticket.
+            :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
+            :type freshpy_object: class[freshpy.FreshPy]
+            :param ticket_number: The ticket number for which to return data
+            :type ticket_number: str, int
+            :param body: The body of the ticket reply [HTML]
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: JSON data for the given ticket
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+            """
+            return tickets_module.ticket_reply(self.freshpy_object, ticket_number, body, verify_ssl=verify_ssl)
+
+        def create_ticket(self, email, subject, description, priority, additional=None,
+                      verify_ssl=True):
+            """This function returns the data for a specific ticket.
+            :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
+            :type freshpy_object: class[freshpy.FreshPy]
+            :param email: The email address of the ticket submitter
+            :param subject: The subject line for the new ticket
+            :param description: The description for the new ticket [HTML]
+            :param priority: The priority of the new ticket
+            :param additional: An optional dict of items to be included in the ticket
+            :type additional: dict, None
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: [int] new ticket ID
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+            """
+            return tickets_module.create_ticket(self.freshpy_object, email, subject, description, priority, additional,
+                      verify_ssl=verify_ssl)
 
         def get_ticket(self, ticket_number, include=None, verify_ssl=True):
             """This method returns the data for a specific ticket.
