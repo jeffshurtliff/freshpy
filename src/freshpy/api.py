@@ -37,7 +37,7 @@ def define_auth(api_key):
 
 
 def put_request_with_retries(fresh_object, uri, data, headers=None, return_json=True, verify_ssl=True):
-    """This function performs a POST request and will retry several times if a failure occurs.
+    """This function performs a PUT request and will retry several times if a failure occurs.
 
     :param fresh_object: The instantiated :py:class:`freshpy.core.FreshPy` object.
     :param uri: The URI to query
@@ -65,7 +65,7 @@ def put_request_with_retries(fresh_object, uri, data, headers=None, return_json=
     retries, response = 0, None
     while retries <= 5:
         try:
-            response = requests.put(query_url, headers=headers, data=data, auth=credentials, verify=verify_ssl)
+            response = requests.put(query_url, headers=headers, data=json.dumps(data), auth=credentials, verify=verify_ssl)
             break
         except Exception as exc_msg:
             _report_failed_attempt(exc_msg, 'post', retries)
@@ -107,7 +107,7 @@ def post_request_with_retries(fresh_object, uri, data, headers=None, return_json
     retries, response = 0, None
     while retries <= 5:
         try:
-            response = requests.post(query_url, headers=headers, data=data, auth=credentials, verify=verify_ssl)
+            response = requests.post(query_url, headers=headers, data=json.dumps(data), auth=credentials, verify=verify_ssl)
             break
         except Exception as exc_msg:
             _report_failed_attempt(exc_msg, 'post', retries)

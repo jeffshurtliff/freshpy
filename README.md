@@ -43,7 +43,7 @@ ticket_id = fresh.tickets.create_ticket("email@test.org", "Subject Line", "Ticke
                                         additional={"category": "Hardware", "source": 1002})
 fresh.tickets.ticket_reply(ticket_id, "Body of ticket comment")
 ticket_data = fresh.tickets.get_ticket(1299)
-freshpy.tickets.close_ticket(ticket_id,resolution=None)
+fresh.tickets.close_ticket(ticket_id,resolution=None)
 ```
 
 ## Additional Resources
