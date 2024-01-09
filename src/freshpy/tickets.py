@@ -3,8 +3,8 @@
 :Module:            freshpy.tickets
 :Synopsis:          Functions for interacting with Freshservice tickets
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     04 Jan 2022
+:Last Modified:     Thejusvi Ganesh
+:Modified Date:     07 Jan 2023
 """
 
 from . import api, errors
@@ -42,6 +42,70 @@ def get_ticket(freshpy_object, ticket_number, include=None, verify_ssl=True):
     uri = f'tickets/{ticket_number}'
     uri += _parse_constraints(_include=include)
     return api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
+
+
+def close_ticket(freshpy_object, ticket_number, resolution=None, verify_ssl=True):
+    """This function returns the data for a specific ticket.
+    :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
+    :type freshpy_object: class[freshpy.FreshPy]
+    :param ticket_number: The ticket number for which to return data
+    :type ticket_number: str, int
+    :param resolution: The ticket resolution
+    :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+    :type verify_ssl: bool
+    :returns: JSON data for the given ticket
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+    """
+    uri = f'tickets/{ticket_number}'
+    if not resolution:
+        resolution = "CLOSED by API"
+    else:
+        resolution = resolution + ", CLOSED by API"
+    data = {"custom_fields": {"resolution": resolution}}
+    api.put_request_with_retries(freshpy_object, uri, data=data, verify_ssl=verify_ssl)
+    return api.put_request_with_retries(freshpy_object, uri, data={"status": 5}, verify_ssl=verify_ssl)
+
+
+def ticket_reply(freshpy_object, ticket_number, body, verify_ssl=True):
+    """This function returns the data for a specific ticket.
+    :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
+    :type freshpy_object: class[freshpy.FreshPy]
+    :param ticket_number: The ticket number for which to return data
+    :type ticket_number: str, int
+    :param body: The body of the ticket reply [HTML]
+    :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+    :type verify_ssl: bool
+    :returns: JSON data for the given ticket
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+    """
+    uri = f'tickets/{ticket_number}/reply'
+    body = body + "<br><br>Created by an automated API process."
+    data = {"body": body}
+    return api.post_request_with_retries(freshpy_object, uri, data=data, verify_ssl=verify_ssl)
+
+
+def create_ticket(freshpy_object, email, subject, description, priority, additional=None, verify_ssl=True):
+    """This function returns the data for a specific ticket.
+    :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
+    :type freshpy_object: class[freshpy.FreshPy]
+    :param email: The email address of the ticket submitter
+    :param subject: The subject line for the new ticket
+    :param description: The description for the new ticket [HTML]
+    :param priority: The priority of the new ticket
+    :param additional: An optional dict of items to be included in the ticket
+    :type additional: dict, None
+    :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+    :type verify_ssl: bool
+    :returns: [int] new ticket ID
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+    """
+    uri = f'tickets'
+    description = description + "<br><br>Created by an automated API process."
+    data = {"email": email, "subject": subject, "description": description, "priority": priority, "status": 2}
+    if additional:
+        data.update(additional)
+    result = api.post_request_with_retries(freshpy_object, uri, data=data, verify_ssl=verify_ssl)
+    return result["ticket"]["id"]
 
 
 def get_tickets(freshpy_object, include=None, predefined_filter=None, filters=None, filter_logic='AND',

@@ -3,8 +3,8 @@
 :Module:            freshpy.api
 :Synopsis:          This module handles interactions with the Freshservice REST API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     04 Jan 2022
+:Last Modified:     Thejusvi Ganesh
+:Modified Date:     07 Jan 2023
 """
 
 import json
@@ -34,6 +34,90 @@ def define_auth(api_key):
     """
     credentials = (api_key, 'X')
     return credentials
+
+
+def put_request_with_retries(fresh_object, uri, data, headers=None, return_json=True, verify_ssl=True):
+    """This function performs a PUT request and will retry several times if a failure occurs.
+
+    :param fresh_object: The instantiated :py:class:`freshpy.core.FreshPy` object.
+    :param uri: The URI to query
+    :type uri: string
+    :param headers: The HTTP headers to utilize in the REST API call
+    :type headers: dict
+    :type data: dict
+    :param return_json: Determines if JSON data should be returned
+    :type return_json: bool
+    :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+    :type verify_ssl: bool
+    :returns: The JSON data from the response or the raw :py:mod:`requests` response.
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+    """
+    # Define headers if not supplied
+    headers = define_headers() if not headers else headers
+
+    # Construct the credentials dictionary
+    credentials = define_auth(fresh_object.api_key)
+
+    # Construct the query URL
+    query_url = fresh_object.base_url + uri
+
+    # Perform the API call
+    retries, response = 0, None
+    while retries <= 5:
+        try:
+            response = requests.put(query_url, headers=headers, data=json.dumps(data), auth=credentials, verify=verify_ssl)
+            break
+        except Exception as exc_msg:
+            _report_failed_attempt(exc_msg, 'post', retries)
+            retries += 1
+    if retries == 6:
+        _raise_exception_for_repeated_timeouts()
+        pass
+    if return_json:
+        response = response.json()
+    return response
+
+
+def post_request_with_retries(fresh_object, uri, data, headers=None, return_json=True, verify_ssl=True):
+    """This function performs a POST request and will retry several times if a failure occurs.
+
+    :param fresh_object: The instantiated :py:class:`freshpy.core.FreshPy` object.
+    :param uri: The URI to query
+    :type uri: string
+    :param headers: The HTTP headers to utilize in the REST API call
+    :type headers: dict
+    :type data: dict
+    :param return_json: Determines if JSON data should be returned
+    :type return_json: bool
+    :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+    :type verify_ssl: bool
+    :returns: The JSON data from the response or the raw :py:mod:`requests` response.
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+    """
+    # Define headers if not supplied
+    headers = define_headers() if not headers else headers
+
+    # Construct the credentials dictionary
+    credentials = define_auth(fresh_object.api_key)
+
+    # Construct the query URL
+    query_url = fresh_object.base_url + uri
+
+    # Perform the API call
+    retries, response = 0, None
+    while retries <= 5:
+        try:
+            response = requests.post(query_url, headers=headers, data=json.dumps(data), auth=credentials, verify=verify_ssl)
+            break
+        except Exception as exc_msg:
+            _report_failed_attempt(exc_msg, 'post', retries)
+            retries += 1
+    if retries == 6:
+        _raise_exception_for_repeated_timeouts()
+        pass
+    if return_json:
+        response = response.json()
+    return response
 
 
 def get_request_with_retries(fresh_object, uri, headers=None, return_json=True, verify_ssl=True):
