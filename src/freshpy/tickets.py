@@ -78,7 +78,7 @@ def ticket_reply(freshpy_object, ticket_number, body, verify_ssl=True):
     :returns: JSON data for the given ticket
     :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
     """
-    uri = f'tickets/{ticket_number}'
+    uri = f'tickets/{ticket_number}/reply'
     body = body + "<br><br>Created by an automated API process."
     data = {"body": body}
     return api.post_request_with_retries(freshpy_object, uri, data=data, verify_ssl=verify_ssl)
