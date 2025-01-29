@@ -4,11 +4,12 @@
 :Synopsis:          Defines the core freshpy object used to interface with the Freshservice API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     04 Jan 2022
+:Modified Date:     29 Jan 2025
 """
 
 from . import api, errors
 from . import tickets as tickets_module
+from . import agents as agents_module
 from .utils import log_utils, version
 
 # Initialize logging
@@ -42,7 +43,15 @@ class FreshPy(object):
         self.api_key = api_key
 
         # Import inner object classes so their methods can be called from the primary object
+        self.agents = self._import_agents_class()
         self.tickets = self._import_tickets_class()
+
+    def _import_agents_class(self):
+        """This method allows the :py:class:`freshpy.core.FreshPy.Agents` class to be utilized in the core object.
+
+        .. versionadded:: 2.0.0
+        """
+        return FreshPy.Agents(self)
 
     def _import_tickets_class(self):
         """This method allows the :py:class:`freshpy.core.FreshPy.Tickets` class to be utilized in the core object.
@@ -71,6 +80,32 @@ class FreshPy(object):
         :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
         """
         return api.get_request_with_retries(self, uri, headers, return_json, verify_ssl=verify_ssl)
+
+    class Agents(object):
+        """This class includes methods associated with Freshservice agents."""
+        def __init__(self, freshpy_object):
+            """This method initializes the :py:class:`freshpy.core.freshpy.Tickets` inner class object.
+
+            .. versionadded:: 2.0.0
+
+            :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
+            :type freshpy_object: class[freshpy.FreshPy]
+            """
+            self.freshpy_object = freshpy_object
+
+        def get_user_info(self, agent_id, verify_ssl=True):
+            """This function retrieves user data for a specific agent.
+
+            .. versionadded:: 2.0.0
+
+            :param agent_id: The numeric ID for the agent for which to retrieve data
+            :tyype agent_id: str, int
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: JSON data with the agent user data
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+            """
+            return agents_module.get_user_info(self.freshpy_object, agent_id, verify_ssl=verify_ssl)
 
     class Tickets(object):
         """This class includes methods associated with Freshservice tickets."""
