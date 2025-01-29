@@ -4,7 +4,7 @@
 :Synopsis:          Collection of exception classes relating to the freshpy library
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     28 Dec 2021
+:Modified Date:     29 Jan 2025
 """
 
 #################
@@ -96,6 +96,19 @@ class InvalidFieldError(FreshPyError):
         elif 'val' in kwargs:
             custom_msg = f"{default_msg.split('field ')[0]}'{kwargs['val']}'{default_msg.split('The')[1]}"
             args = (custom_msg,)
+        super().__init__(*args)
+
+
+class InvalidFilterError(FreshPyError):
+    """This exception is used when an invalid filter for an API call is provided.
+
+    .. versionadded:: 2.0.0
+    """
+    def __init__(self, *args, **kwargs):
+        """This method defines the default or custom message for the exception."""
+        default_msg = "The supplied filter is invalid."
+        if not (args or kwargs):
+            args = (default_msg,)
         super().__init__(*args)
 
 
@@ -261,7 +274,7 @@ class InvalidRequestTypeError(FreshPyError):
 
 
 class LookupMismatchError(FreshPyError):
-    """This exception is used when an a lookup value does not match the supplied lookup type.
+    """This exception is used when a lookup value does not match the supplied lookup type.
 
     .. versionadded:: 1.0.0
     """
