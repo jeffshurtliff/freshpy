@@ -17,6 +17,7 @@ Additions to the :doc:`core-object-methods`.
 
 * Added the :py:class:`freshpy.core.FreshPy.Agents` class with the following methods:
     * :py:meth:`freshpy.core.FreshPy.Agents.get_user_info`
+    * :py:meth:`freshpy.core.FreshPy.Agents.get_all_agents`
 
 Primary Modules
 ---------------
@@ -24,6 +25,13 @@ Additions to the :doc:`primary modules <primary-modules>`.
 
 * Added the :py:mod:`freshpy.agents` with the following functions:
     * :py:func:`freshpy.agents.get_user_info`
+    * :py:func:`freshpy.agents.get_all_agents`
+
+Supporting Modules
+------------------
+Additions to the :doc:`supporting modules <supporting-modules>`.
+
+* Added the :py:class:`freshpy.errors.exceptions.InvalidFilterError` exception.
 
 Changed
 =======
