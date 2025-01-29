@@ -25,6 +25,17 @@ Additions to the :doc:`primary modules <primary-modules>`.
 * Added the :py:mod:`freshpy.agents` with the following functions:
     * :py:func:`freshpy.agents.get_user_info`
 
+Changed
+=======
+
+Primary Modules
+---------------
+Changes to the :doc:`primary modules <primary-modules>`.
+
+* Added error handling to the :py:func:`freshpy.api.get_request_with_retries` function.
+* Replaced a generic py:exc:`Exception` with a py:exc:`RuntimeError` exception in the
+  py:func:`freshpy.api._report_failed_attempt` function.
+
 |
 
 -----
