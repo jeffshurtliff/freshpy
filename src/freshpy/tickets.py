@@ -4,7 +4,7 @@
 :Synopsis:          Functions for interacting with Freshservice tickets
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     04 Jan 2022
+:Modified Date:     29 Jan 2025
 """
 
 from . import api, errors
@@ -104,7 +104,7 @@ def _parse_filters(_filters=None, _logic='AND'):
         _filters = core_utils.url_encode(_filters)
         _uri_segment = f'/filter?query="{_filters}"'
     else:
-        _uri_segment = f'/filter?query='
+        _uri_segment = '/filter?query='
         _filter = ''
         for _idx, (_field, _value) in enumerate(_filters.items()):
             _filter += f'{_field}:{_value}'
@@ -176,4 +176,3 @@ def _parse_constraints(_include=None, _predefined_filter=None, _requester_id=Non
     if _page:
         _constraints = core_utils.construct_query_string(_constraints, f'page={_page}')
     return _constraints
-
