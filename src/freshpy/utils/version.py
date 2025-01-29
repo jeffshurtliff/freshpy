@@ -4,7 +4,7 @@
 :Synopsis:          This simple script contains the package version
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     08 May 2023
+:Modified Date:     29 Jan 2025
 """
 
 from . import log_utils
@@ -13,7 +13,7 @@ from . import log_utils
 logger = log_utils.initialize_logging(__name__)
 
 # Define special and global variables
-__version__ = "1.1.1"
+__version__ = "2.0.0"
 
 
 def get_full_version():
