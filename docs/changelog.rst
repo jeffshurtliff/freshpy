@@ -4,6 +4,32 @@ Change Log
 This page documents the additions, changes, fixes, deprecations and removals made in each release.
 
 ******
+v2.0.0
+******
+**Release Date: TBD**
+
+Added
+=====
+
+Core Object
+-----------
+Additions to the :doc:`core-object-methods`.
+
+* Added the :py:class:`freshpy.core.FreshPy.Agents` class with the following methods:
+    * :py:meth:`freshpy.core.FreshPy.Agents.get_user_info`
+
+Primary Modules
+---------------
+Additions to the :doc:`primary modules <primary-modules>`.
+
+* Added the :py:mod:`freshpy.agents` with the following functions:
+    * :py:func:`freshpy.agents.get_user_info`
+
+|
+
+-----
+
+******
 v1.1.1
 ******
 **Release Date: 2023-05-08**
