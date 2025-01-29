@@ -4,7 +4,7 @@
 :Synopsis:          This module handles interactions with the Freshservice REST API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     04 Jan 2022
+:Modified Date:     29 Jan 2025
 """
 
 import json
@@ -38,6 +38,9 @@ def define_auth(api_key):
 
 def get_request_with_retries(fresh_object, uri, headers=None, return_json=True, verify_ssl=True):
     """This function performs a GET request and will retry several times if a failure occurs.
+
+    .. versionchanged:: 2.0.0
+       Added error handling for 404 responses and exceptions when converting response to JSON.
 
     .. versionchanged:: 1.1.0
        Added the ability to disable SSL verification on API calls.
@@ -76,14 +79,30 @@ def get_request_with_retries(fresh_object, uri, headers=None, return_json=True, 
             retries += 1
     if retries == 6:
         _raise_exception_for_repeated_timeouts()
-        pass
     if return_json:
-        response = response.json()
+        if response.status_code == 404:
+            response = {
+                'status': 'error',
+                'status_code': 404,
+                'error_message': 'Data not found',
+            }
+        else:
+            try:
+                response = response.json()
+            except Exception as exc_msg:
+                response = {
+                    'status': 'exception',
+                    'status_code': None,
+                    'error_message': exc_msg,
+                }
     return response
 
 
 def _report_failed_attempt(_exc_msg, _request_type, _retries):
     """This function reports a failed API call that will be retried.
+
+    .. versionchanged:: 2.0.0
+       Replaced a generic py:exc:`Exception` with a py:exc:`RuntimeError` exception.
 
     .. versionadded:: 1.0.0
 
@@ -96,7 +115,7 @@ def _report_failed_attempt(_exc_msg, _request_type, _retries):
     """
     _exc_name = type(_exc_msg).__name__
     if 'connect' not in _exc_name.lower():
-        raise Exception(f"{_exc_name}: {_exc_msg}")
+        raise RuntimeError(f"{_exc_name}: {_exc_msg}")
     _current_attempt = f"(Attempt {_retries} of 5)"
     _error_msg = f"The {_request_type.upper()} request has failed with the following exception: " + \
                  f"{_exc_name}: {_exc_msg} {_current_attempt}"
