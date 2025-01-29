@@ -7,8 +7,6 @@
 :Modified Date:     29 Jan 2025
 """
 
-import json
-
 import requests
 
 from . import errors
@@ -120,7 +118,6 @@ def _report_failed_attempt(_exc_msg, _request_type, _retries):
     _error_msg = f"The {_request_type.upper()} request has failed with the following exception: " + \
                  f"{_exc_name}: {_exc_msg} {_current_attempt}"
     errors.handlers.eprint(f"{_error_msg}\n{_exc_name}: {_exc_msg}\n")
-    return
 
 
 def _raise_exception_for_repeated_timeouts():

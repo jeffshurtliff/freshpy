@@ -106,7 +106,7 @@ class FreshPy(object):
             :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
                      :py:exc:`freshpy.errors.exceptions.InvalidFieldError`
             """
-            return agents_module.get_user_info(self.freshpy_object, lookup_value, verify_ssl=verify_ssl)
+            return agents_module.get_user_info(self.freshpy_object, lookup_value=lookup_value, verify_ssl=verify_ssl)
 
         def get_all_agents(self, only_active=None, only_inactive=None, verify_ssl=True):
             """This function returns data for all agents with an optional filters for active or inactive users.
@@ -173,6 +173,9 @@ class FreshPy(object):
         def get_ticket(self, ticket_number, include=None, verify_ssl=True):
             """This method returns the data for a specific ticket.
 
+            .. versionchanged:: 2.0.0
+               Updated the function call to use keyword arguments.
+
             .. versionchanged:: 1.1.0
                Added the ability to disable SSL verification on API calls.
 
@@ -187,7 +190,8 @@ class FreshPy(object):
             :returns: JSON data for the given ticket
             :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
             """
-            return tickets_module.get_ticket(self.freshpy_object, ticket_number, include, verify_ssl=verify_ssl)
+            return tickets_module.get_ticket(self.freshpy_object, ticket_number=ticket_number, include=include,
+                                             verify_ssl=verify_ssl)
 
         def get_tickets(self, include=None, predefined_filter=None, filters=None, filter_logic='AND', requester_id=None,
                         requester_email=None, ticket_type=None, updated_since=None, ascending=None, descending=None,
