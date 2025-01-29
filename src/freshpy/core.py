@@ -93,19 +93,20 @@ class FreshPy(object):
             """
             self.freshpy_object = freshpy_object
 
-        def get_user_info(self, agent_id, verify_ssl=True):
+        def get_user_info(self, lookup_value, verify_ssl=True):
             """This function retrieves user data for a specific agent.
 
             .. versionadded:: 2.0.0
 
-            :param agent_id: The numeric ID for the agent for which to retrieve data
-            :tyype agent_id: str, int
+            :param lookup_value: An Agent ID or email address with which to look up the user
+            :tyype lookup_value: str, int
             :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
             :type verify_ssl: bool
             :returns: JSON data with the agent user data
-            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.InvalidFieldError`
             """
-            return agents_module.get_user_info(self.freshpy_object, agent_id, verify_ssl=verify_ssl)
+            return agents_module.get_user_info(self.freshpy_object, lookup_value, verify_ssl=verify_ssl)
 
         def get_all_agents(self, only_active=None, only_inactive=None, verify_ssl=True):
             """This function returns data for all agents with an optional filters for active or inactive users.
@@ -123,6 +124,39 @@ class FreshPy(object):
             """
             return agents_module.get_all_agents(self.freshpy_object, only_active=only_active,
                                                 only_inactive=only_inactive, verify_ssl=verify_ssl)
+
+        def get_agent_id(self, email, verify_ssl=True):
+            """This function retrieves the Agent ID value for a specific agent.
+
+            .. versionadded:: 2.0.0
+
+            :param email: The email address of the agent
+            :type email: str
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: The Agent ID of the agent as an integer
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.NotFoundResponseError`,
+                     :py:exc:`freshpy.errors.exceptions.InvalidFieldError`
+            """
+            return agents_module.get_agent_id(self.freshpy_object, email=email, verify_ssl=verify_ssl)
+
+        def get_assignment_history(self, lookup_value, verify_ssl=True):
+            """This function retrieves the user assignment history for a specific agent.
+
+            .. versionadded:: 2.0.0
+
+            :param lookup_value: An Agent ID or email address with which to look up the user
+            :tyype lookup_value: str, int
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: JSON data for the assignment history for the agent
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.NotFoundResponseError`,
+                     :py:exc:`freshpy.errors.exceptions.InvalidFieldError`
+            """
+            return agents_module.get_assignment_history(self.freshpy_object, lookup_value=lookup_value,
+                                                        verify_ssl=verify_ssl)
 
     class Tickets(object):
         """This class includes methods associated with Freshservice tickets."""
