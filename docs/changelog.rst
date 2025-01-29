@@ -6,7 +6,7 @@ This page documents the additions, changes, fixes, deprecations and removals mad
 ******
 v2.0.0
 ******
-**Release Date: TBD**
+**Release Date: 2025-01-29**
 
 Added
 =====
@@ -48,6 +48,8 @@ Changes to the :doc:`primary modules <primary-modules>`.
 * Added error handling to the :py:func:`freshpy.api.get_request_with_retries` function.
 * Replaced a generic py:exc:`Exception` with a py:exc:`RuntimeError` exception in the
   py:func:`freshpy.api._report_failed_attempt` function.
+* Removed an unnecessary ``return`` statement from the
+  :py:func:`freshpy.api._report_failed_attempt` function.
 
 |
 
