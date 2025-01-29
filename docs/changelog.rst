@@ -18,6 +18,8 @@ Additions to the :doc:`core-object-methods`.
 * Added the :py:class:`freshpy.core.FreshPy.Agents` class with the following methods:
     * :py:meth:`freshpy.core.FreshPy.Agents.get_user_info`
     * :py:meth:`freshpy.core.FreshPy.Agents.get_all_agents`
+    * :py:meth:`freshpy.core.FreshPy.Agents.get_agent_id`
+    * :py:meth:`freshpy.core.FreshPy.Agents.get_assignment_history`
 
 Primary Modules
 ---------------
@@ -26,12 +28,15 @@ Additions to the :doc:`primary modules <primary-modules>`.
 * Added the :py:mod:`freshpy.agents` with the following functions:
     * :py:func:`freshpy.agents.get_user_info`
     * :py:func:`freshpy.agents.get_all_agents`
+    * :py:func:`freshpy.agents.get_agent_id`
+    * :py:func:`freshpy.agents.get_assignment_history`
+    * :py:func:`freshpy.agents._get_user_info_by_email`
 
 Supporting Modules
 ------------------
 Additions to the :doc:`supporting modules <supporting-modules>`.
 
-* Added the :py:class:`freshpy.errors.exceptions.InvalidFilterError` exception.
+* Added the :py:exc:`freshpy.errors.exceptions.InvalidFilterError` exception.
 
 Changed
 =======
@@ -103,5 +108,3 @@ Changes to the :doc:`primary modules <primary-modules>`.
     * :py:func:`freshpy.api.get_request_with_retries`
     * :py:func:`freshpy.tickets.get_ticket`
     * :py:func:`freshpy.tickets.get_tickets`
-
-
