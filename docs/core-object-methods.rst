@@ -7,6 +7,7 @@ within the core object for the **freshpy** package, which are listed below.
 * `Init Module (freshpy)`_
 * `Core Module (freshpy.core)`_
     * `Core Functionality Subclasses (freshpy.core.FreshPy)`_
+        * `Agents Subclass (freshpy.core.FreshPy.Agents)`_
         * `Tickets Subclass (freshpy.core.FreshPy.Tickets)`_
 
 |
@@ -46,6 +47,16 @@ These classes below are inner/nested classes within the core :py:class:`freshpy.
 .. note:: The classes themselves are *PascalCase* format and singular (e.g. ``Node``, ``Category``, etc.) whereas
           the names used to call the inner class methods are all *lowercase* (or *snake_case*) and plural.
           (e.g. ``core_object.nodes.get_node_id()``, ``core_object.categories.get_category_id()``, etc.)
+
+Agents Subclass (freshpy.core.FreshPy.Agents)
+---------------------------------------------
+.. autoclass:: freshpy.core::FreshPy.Agents
+   :members:
+   :noindex:
+
+:doc:`Return to Top <core-object-methods>`
+
+|
 
 Tickets Subclass (freshpy.core.FreshPy.Tickets)
 -----------------------------------------------

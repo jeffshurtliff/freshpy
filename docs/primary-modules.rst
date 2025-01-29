@@ -37,6 +37,18 @@ This module handles interactions with the Freshservice API.
 
 |
 
+******************************
+Agents Module (freshpy.agents)
+******************************
+This module handles interactions with Freshservice agents.
+
+.. automodule:: freshpy.agents
+   :members:
+
+:doc:`Return to Top <primary-modules>`
+
+|
+
 ********************************
 Tickets Module (freshpy.tickets)
 ********************************
