@@ -107,6 +107,23 @@ class FreshPy(object):
             """
             return agents_module.get_user_info(self.freshpy_object, agent_id, verify_ssl=verify_ssl)
 
+        def get_all_agents(self, only_active=None, only_inactive=None, verify_ssl=True):
+            """This function returns data for all agents with an optional filters for active or inactive users.
+
+            .. versionadded:: 2.0.0
+
+            :param only_active: Filters for only active agents when ``True``
+            :type only_active: bool, None
+            :param only_inactive: Filters for only inactive agents when ``True``
+            :type only_inactive: bool, None
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: JSON data with user data for all agents
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+            """
+            return agents_module.get_all_agents(self.freshpy_object, only_active=only_active,
+                                                only_inactive=only_inactive, verify_ssl=verify_ssl)
+
     class Tickets(object):
         """This class includes methods associated with Freshservice tickets."""
         def __init__(self, freshpy_object):
