@@ -4,8 +4,10 @@
 :Synopsis:          Defines the core freshpy object used to interface with the Freshservice API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     29 Jan 2025
+:Modified Date:     31 Dec 2025
 """
+
+import inspect
 
 from . import api, errors
 from . import tickets as tickets_module
@@ -18,16 +20,19 @@ logger = log_utils.initialize_logging(__name__)
 
 class FreshPy(object):
     """This is the class for the core object leveraged in this library."""
-    # Define the function that initializes the object instance (i.e. instantiates the object)
-    def __init__(self, domain=None, api_key=None):
-        """This method instantiates the core Fresh object.
+    def __init__(self, domain=None, api_key=None, verify_ssl=None):
+        """This method instantiates the core FreshPy object.
 
-        .. versionadded:: 1.0.0
+        .. version-changed:: 3.0.0
+           Made multiple improvements to the object class and methods. (See changelog for full details)
+
+        .. version-added:: 1.0.0
         """
-        # Define the current version
+        # Define the current package version
         self.version = version.get_full_version()
 
         # Raise an exception if the domain and API key were not supplied
+        # TODO: Add functionality to leverage environment variable for the domain and/or API key
         if not domain or not api_key:
             raise errors.exceptions.MissingRequiredDataError('init')
 
@@ -42,6 +47,10 @@ class FreshPy(object):
         # Define the API key
         self.api_key = api_key
 
+        # Determine if SSL verification should occur at the object level (True by default)
+        self.verify_ssl = True if not verify_ssl else verify_ssl
+        self.verify_ssl = True if not isinstance(self.verify_ssl, bool) else self.verify_ssl
+
         # Import inner object classes so their methods can be called from the primary object
         self.agents = self._import_agents_class()
         self.tickets = self._import_tickets_class()
@@ -49,24 +58,73 @@ class FreshPy(object):
     def _import_agents_class(self):
         """This method allows the :py:class:`freshpy.core.FreshPy.Agents` class to be utilized in the core object.
 
-        .. versionadded:: 2.0.0
+        .. version-added:: 2.0.0
         """
         return FreshPy.Agents(self)
 
     def _import_tickets_class(self):
         """This method allows the :py:class:`freshpy.core.FreshPy.Tickets` class to be utilized in the core object.
 
-        .. versionadded:: 1.0.0
+        .. version-added:: 1.0.0
         """
         return FreshPy.Tickets(self)
 
-    def get(self, uri, headers=None, return_json=True, verify_ssl=True):
+    def _determine_ssl_verification(self, param_value=None):
+        """This method checks to determine if SSL verification is enabled at the object or function/method level.
+
+        .. version-added:: 3.0.0
+
+        :param param_value: Value of the ``verify_ssl`` parameter from a parent function/method
+        :type param_value: bool, None
+        :returns: Boolean value indicating whether SSL verification is enabled
+        """
+        # Define the variable that will ultimately be returned
+        ssl_verification = None
+
+        # Get the name of the parent function or method that called this method
+        frame = inspect.currentframe()
+        try:
+            caller = frame.f_back
+            parent_name = caller.f_code.co_name
+        except Exception as exc:
+            parent_name = 'parent_function_or_method'
+            exc_type = type(exc).__name__
+            logger.error(f'Failed to identify parent function or method due to {exc_type} exception')
+        finally:
+            # Prevent reference cycles
+            del frame
+
+        # Check if the SSL verification was set explicitly by the parent function/method
+        if param_value is not None:
+            if isinstance(param_value, bool):
+                ssl_verification = param_value
+                if not ssl_verification:
+                    logger.warning(f'SSL verification was disabled explicitly by {parent_name} for API calls')
+            else:
+                logger.error(f'The verify_ssl parameter from {parent_name} is not a Boolean and will be ignored')
+
+        # Leverage the object-level setting if defined
+        if ssl_verification is None and self.verify_ssl is not None and isinstance(self.verify_ssl, bool):
+            ssl_verification = self.verify_ssl
+
+        elif ssl_verification is None:
+            # Force SSL verification by default
+            ssl_verification = True
+            logger.debug('SSL verification will be enabled by default as the setting has not been defined')
+
+        # Return the final Boolean value indicating if SSL verification should occur
+        return ssl_verification
+
+    def get(self, uri, headers=None, return_json=True, verify_ssl=None):
         """This method performs a GET request against the Freshservice API with multiple retries on failure.
 
-        .. versionchanged:: 1.1.0
+        .. version-changed:: 3.0.0
+           Changed the default ``verify_ssl`` parameter to be ``None`` and called method to check SSL verification
+
+        .. version-changed:: 1.1.0
            Added the ability to disable SSL verification on API calls.
 
-        .. versionadded:: 1.0.0
+        .. version-added:: 1.0.0
 
         :param uri: The URI to query
         :type uri: string
@@ -79,6 +137,7 @@ class FreshPy(object):
         :returns: The JSON data from the response or the raw :py:mod:`requests` response.
         :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
         """
+        verify_ssl = self._determine_ssl_verification(verify_ssl)
         return api.get_request_with_retries(self, uri, headers, return_json, verify_ssl=verify_ssl)
 
     class Agents(object):
@@ -86,17 +145,20 @@ class FreshPy(object):
         def __init__(self, freshpy_object):
             """This method initializes the :py:class:`freshpy.core.freshpy.Tickets` inner class object.
 
-            .. versionadded:: 2.0.0
+            .. version-added:: 2.0.0
 
             :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
             :type freshpy_object: class[freshpy.FreshPy]
             """
             self.freshpy_object = freshpy_object
 
-        def get_user_info(self, lookup_value, verify_ssl=True):
+        def get_user_info(self, lookup_value, verify_ssl=None):
             """This function retrieves user data for a specific agent.
 
-            .. versionadded:: 2.0.0
+            .. version-changed:: 3.0.0
+               Changed the default ``verify_ssl`` parameter to be ``None`` and called method to check SSL verification
+
+            .. version-added:: 2.0.0
 
             :param lookup_value: An Agent ID or email address with which to look up the user
             :tyype lookup_value: str, int
@@ -106,12 +168,16 @@ class FreshPy(object):
             :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
                      :py:exc:`freshpy.errors.exceptions.InvalidFieldError`
             """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return agents_module.get_user_info(self.freshpy_object, lookup_value=lookup_value, verify_ssl=verify_ssl)
 
-        def get_all_agents(self, only_active=None, only_inactive=None, verify_ssl=True):
+        def get_all_agents(self, only_active=None, only_inactive=None, verify_ssl=None):
             """This function returns data for all agents with an optional filters for active or inactive users.
 
-            .. versionadded:: 2.0.0
+            .. version-changed:: 3.0.0
+               Changed the default ``verify_ssl`` parameter to be ``None`` and called method to check SSL verification
+
+            .. version-added:: 2.0.0
 
             :param only_active: Filters for only active agents when ``True``
             :type only_active: bool, None
@@ -122,13 +188,17 @@ class FreshPy(object):
             :returns: JSON data with user data for all agents
             :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
             """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return agents_module.get_all_agents(self.freshpy_object, only_active=only_active,
                                                 only_inactive=only_inactive, verify_ssl=verify_ssl)
 
-        def get_agent_id(self, email, verify_ssl=True):
+        def get_agent_id(self, email, verify_ssl=None):
             """This function retrieves the Agent ID value for a specific agent.
 
-            .. versionadded:: 2.0.0
+            .. version-changed:: 3.0.0
+               Changed the default ``verify_ssl`` parameter to be ``None`` and called method to check SSL verification
+
+            .. version-added:: 2.0.0
 
             :param email: The email address of the agent
             :type email: str
@@ -139,12 +209,16 @@ class FreshPy(object):
                      :py:exc:`freshpy.errors.exceptions.NotFoundResponseError`,
                      :py:exc:`freshpy.errors.exceptions.InvalidFieldError`
             """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return agents_module.get_agent_id(self.freshpy_object, email=email, verify_ssl=verify_ssl)
 
-        def get_assignment_history(self, lookup_value, verify_ssl=True):
+        def get_assignment_history(self, lookup_value, verify_ssl=None):
             """This function retrieves the user assignment history for a specific agent.
 
-            .. versionadded:: 2.0.0
+            .. version-changed:: 3.0.0
+               Changed the default ``verify_ssl`` parameter to be ``None`` and called method to check SSL verification
+
+            .. version-added:: 2.0.0
 
             :param lookup_value: An Agent ID or email address with which to look up the user
             :tyype lookup_value: str, int
@@ -155,6 +229,7 @@ class FreshPy(object):
                      :py:exc:`freshpy.errors.exceptions.NotFoundResponseError`,
                      :py:exc:`freshpy.errors.exceptions.InvalidFieldError`
             """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return agents_module.get_assignment_history(self.freshpy_object, lookup_value=lookup_value,
                                                         verify_ssl=verify_ssl)
 
@@ -163,23 +238,26 @@ class FreshPy(object):
         def __init__(self, freshpy_object):
             """This method initializes the :py:class:`freshpy.core.freshpy.Tickets` inner class object.
 
-            .. versionadded:: 1.0.0
+            .. version-added:: 1.0.0
 
             :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
             :type freshpy_object: class[freshpy.FreshPy]
             """
             self.freshpy_object = freshpy_object
 
-        def get_ticket(self, ticket_number, include=None, verify_ssl=True):
+        def get_ticket(self, ticket_number, include=None, verify_ssl=None):
             """This method returns the data for a specific ticket.
 
-            .. versionchanged:: 2.0.0
+            .. version-changed:: 3.0.0
+               Changed the default ``verify_ssl`` parameter to be ``None`` and called method to check SSL verification
+
+            .. version-changed:: 2.0.0
                Updated the function call to use keyword arguments.
 
-            .. versionchanged:: 1.1.0
+            .. version-changed:: 1.1.0
                Added the ability to disable SSL verification on API calls.
 
-            .. versionadded:: 1.0.0
+            .. version-added:: 1.0.0
 
             :param ticket_number: The ticket number for which to return data
             :type ticket_number: str, int
@@ -190,18 +268,22 @@ class FreshPy(object):
             :returns: JSON data for the given ticket
             :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
             """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return tickets_module.get_ticket(self.freshpy_object, ticket_number=ticket_number, include=include,
                                              verify_ssl=verify_ssl)
 
         def get_tickets(self, include=None, predefined_filter=None, filters=None, filter_logic='AND', requester_id=None,
                         requester_email=None, ticket_type=None, updated_since=None, ascending=None, descending=None,
-                        per_page=None, page=None, verify_ssl=True):
+                        per_page=None, page=None, verify_ssl=None):
             """This method returns a sequence of tickets with optional filters.
 
-            .. versionchanged:: 1.1.0
+            .. version-changed:: 3.0.0
+               Changed the default ``verify_ssl`` parameter to be ``None`` and called method to check SSL verification
+
+            .. version-changed:: 1.1.0
                Added the ability to disable SSL verification on API calls.
 
-            .. versionadded:: 1.0.0
+            .. version-added:: 1.0.0
 
             :param include: A string or iterable of `embedding <https://api.freshservice.com/#view_a_ticket>`_ options
             :type include: str, tuple, list, set, None
@@ -233,6 +315,7 @@ class FreshPy(object):
             :raises: :py:exc:`freshpy.errors.exceptions.InvalidPredefinedFilterError`,
                      :py:exc:`freshpy.errors.exceptions.APIConnectionError`
             """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return tickets_module.get_tickets(self.freshpy_object, include=include, predefined_filter=predefined_filter,
                                               filters=filters, filter_logic=filter_logic, requester_id=requester_id,
                                               per_page=per_page, page=page, requester_email=requester_email,
@@ -242,12 +325,12 @@ class FreshPy(object):
     def __del__(self):
         """This method fully destroys the instance.
 
-        .. versionadded:: 1.0.0
+        .. version-added:: 1.0.0
         """
         self.close()
 
     def close(self):
         """This core method destroys the instance.
 
-        .. versionadded:: 1.0.0
+        .. version-added:: 1.0.0
         """
