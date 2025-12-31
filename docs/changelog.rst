@@ -16,7 +16,12 @@ Supporting Modules
 Additions to the :doc:`supporting modules <supporting-modules>` are listed below.
 
 * Added the following new test modules:
+    * :py:mod:`freshpy.utils.tests.test_log_utils`
     * :py:mod:`freshpy.utils.tests.test_version_utils`
+
+General
+-------
+* Added the new ``.github/workflows/ci.yml`` CI workflow to follow best practices and improve deployments
 
 Changed
 =======
@@ -49,11 +54,10 @@ Removed
 General
 -------
 * Removed the ``setup.py`` file as it is no longer needed for this package
-
+* Removed ``.github/workflows/codeql-analysis.yml`` (replaced by ``.github/workflows/ci.yml``)
 |
 
 -----
-
 
 ******
 v2.0.0

@@ -1,0 +1,98 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  test:
+    name: py${{ matrix.python-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+          # Default OS/Python matrix for 3.8+
+          os: [ ubuntu-latest, macos-latest ]
+          python-version: [ "3.9", "3.10", "3.11", "3.12", "3.13" ]
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Poetry
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install poetry
+          poetry --version
+
+      - name: Install project (with dev dependencies)
+        run: poetry install --with dev --no-interaction --no-ansi
+
+      - name: Lint with flake8
+        run: |
+          poetry run python -m pip install --upgrade flake8
+          # Stop on syntax errors/undefined names
+          poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Treat other issues as warnings; keep line length reasonable
+          poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: Run tests
+        run: |
+          poetry run pytest -q
+
+#      - name: Coverage (pytest-cov) and report
+#        run: |
+#          poetry run python -m pip install --upgrade pytest-cov
+#          poetry run pytest --cov-report=xml --cov=freshpy src/freshpy/utils/tests/ --color=yes
+#
+#      - name: Upload coverage to Codecov
+#        uses: codecov/codecov-action@v4
+#        with:
+#          files: ./coverage.xml
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          fail_ci_if_error: false
+
+      - name: Build sdist and wheel (Poetry)
+        run: |
+          poetry build
+
+  bandit:
+    name: Bandit (security static analysis)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry and project
+        run: |
+          python -m pip install --upgrade pip pipx
+          pipx install poetry
+          poetry install --with dev --no-interaction --no-ansi
+          poetry run python -m pip install --upgrade bandit
+
+      - name: Run Bandit (SARIF output)
+        continue-on-error: true
+        run: |
+          poetry run bandit -r src \
+            -f sarif \
+            -o bandit.sarif
+
+      - name: Upload SARIF to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: bandit.sarif
