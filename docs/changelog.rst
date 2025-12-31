@@ -57,6 +57,7 @@ General
 -------
 * Removed the ``setup.py`` file as it is no longer needed for this package
 * Removed ``.github/workflows/codeql-analysis.yml`` (replaced by ``.github/workflows/ci.yml``)
+
 |
 
 -----
