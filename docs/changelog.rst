@@ -35,7 +35,8 @@ Changes to the :doc:`core-object-methods`.
 * Improved and standardized the handling of SSL verification when performing API calls
     * Added the ``verify_ssl`` parameter to the object instantiation method (which defaults to ``True`` if not defined)
       which allows SSL verification to be enabled or disabled at the object-level
-    * Added the :py:meth`freshpy.core.FreshPy._determine_ssl_verification` method and called it in relevant core methods
+    * Added the :py:meth:`freshpy.core.FreshPy._determine_ssl_verification` method and called it in relevant
+      core object methods to determine the appropriate SSL verification setting
     * Changed the default value of the ``verify_ssl`` parameter in core methods to be ``None`` rather than ``True``
 
 Supporting Modules
