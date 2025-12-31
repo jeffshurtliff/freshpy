@@ -26,7 +26,7 @@ General
     * Removed ``setuptools`` and ``urllib3`` from runtime dependencies
     * Updated dependency versions to mitigate known vulnerabilities found in earlier versions
     * Added ``bandit`` with SARIF support to the dev dependencies
-
+* Updated the ``requirements.txt`` file to be runtime-only and mirror the ``pyproject.toml`` file
 
 |
 
