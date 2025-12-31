@@ -22,7 +22,8 @@ Additions to the :doc:`supporting modules <supporting-modules>` are listed below
 General
 -------
 * Added the new ``.github/workflows/ci.yml`` CI workflow to follow best practices and improve deployments
-* Created the ``.readthedocs.yaml`` file to manage the integration with the ReadTheDocs documentation
+* Added the ``.readthedocs.yaml`` file to manage the integration with the ReadTheDocs documentation
+* Added the ``AGENTS.md`` file to define agent guidelines with the package
 
 Changed
 =======
