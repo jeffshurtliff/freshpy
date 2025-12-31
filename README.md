@@ -128,14 +128,6 @@ The package can be installed via pip using the syntax below.
 pip install freshpy --upgrade
 ```
 
-You may also clone the repository and install from source using below.
-
-```sh
-git clone git://github.com/jeffshurtliff/freshpy.git
-cd freshpy/
-python setup.py install
-```
-
 ## Usage
 This section provides basic usage instructions for the package.
 
