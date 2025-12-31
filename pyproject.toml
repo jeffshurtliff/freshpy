@@ -33,7 +33,6 @@ classifiers = [
 ]
 
 dependencies = [
-    "PyYAML>=6.0.3,<7",
     "requests>=2.32.5",
 ]
 
@@ -49,7 +48,7 @@ Documentation = "https://freshpy.readthedocs.io/en/latest/"
 # --------------------------------------------------------------------
 [tool.poetry]
 packages = [
-    { include = "salespyforce", from = "src" }
+    { include = "freshpy", from = "src" }
 ]
 
 include = ["LICENSE", "README.md"]
