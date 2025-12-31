@@ -3,6 +3,36 @@ Change Log
 ##########
 This page documents the additions, changes, fixes, deprecations and removals made in each release.
 
+***********
+v3.0.0.dev0
+***********
+**Release Date: TBD**
+
+Added
+=====
+TBD
+
+Changed
+=======
+
+General
+-------
+* Updated the ``pyproject.toml`` file to follow best practices and to include the following changes:
+    * Changed the minimum supported Python version to be 3.9
+    * Added hyperlinks to available resources and documentation
+    * Added Trove classifiers for PyPI
+    * Switched from ``setuptools`` to ``poetry``
+    * Moved ``pytest`` to a dev dependency group
+    * Removed ``setuptools`` and ``urllib3`` from runtime dependencies
+    * Updated dependency versions to mitigate known vulnerabilities found in earlier versions
+    * Added ``bandit`` with SARIF support to the dev dependencies
+
+
+|
+
+-----
+
+
 ******
 v2.0.0
 ******
