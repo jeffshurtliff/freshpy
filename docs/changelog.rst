@@ -15,6 +15,13 @@ TBD
 Changed
 =======
 
+Supporting Modules
+------------------
+Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
+
+* Completely refactored the :py:mod:`freshpy.utils.version` module to retrieve the version
+  from the package metadata and using it to define the ``__version__`` special variable
+
 General
 -------
 * Updated the ``pyproject.toml`` file to follow best practices and to include the following changes:
