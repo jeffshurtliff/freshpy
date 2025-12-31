@@ -37,7 +37,7 @@ release = src.freshpy.utils.version.get_full_version()
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
-needs_sphinx = '3.4'
+needs_sphinx = '7.4.7'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -57,10 +57,9 @@ extensions = [
 templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
-source_suffix = {
-    '.rst': 'restructuredtext',
-    '.md': 'markdown',
-}
+# You can specify multiple suffix as a list of string:
+#
+source_suffix = ['.rst', '.md']
 
 # The master toctree document.
 master_doc = 'index'
@@ -97,7 +96,7 @@ html_favicon = '_static/favicon.ico'
 #
 html_theme_options = {
     'logo': 'freshpy-logo.png',
-    'description': 'Freshservice API for Python',
+    'description': 'A Python toolset for performing Freshservice API calls',
     'font_family': 'Arial, sans-serif',
     'head_font_family': 'Arial, sans-serif',
     'github_user': 'jeffshurtliff',
@@ -198,7 +197,7 @@ epub_author = author
 epub_publisher = author
 epub_copyright = copyright
 
-# The unique identifier of the text. This can be a ISBN number
+# The unique identifier of the text. This can be a ISBN
 # or the project homepage.
 #
 # epub_identifier = ''
@@ -216,7 +215,10 @@ epub_exclude_files = ['search.html']
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3/', None),
+    'requests': ('https://requests.readthedocs.io/en/latest/', None),
+}
 
 # -- Options for todo extension ----------------------------------------------
 

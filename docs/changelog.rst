@@ -22,6 +22,7 @@ Additions to the :doc:`supporting modules <supporting-modules>` are listed below
 General
 -------
 * Added the new ``.github/workflows/ci.yml`` CI workflow to follow best practices and improve deployments
+* Created the ``.readthedocs.yaml`` file to manage the integration with the ReadTheDocs documentation
 
 Changed
 =======
@@ -47,6 +48,7 @@ General
     * Added ``bandit`` with SARIF support to the dev dependencies
 * Updated the ``requirements.txt`` file to be runtime-only and mirror the ``pyproject.toml`` file
 * Moved the ``tests/`` directory from the root level to under ``src/freshpy/utils/`` instead
+* Updated the Sphinx configuration (``docs/conf.py``) to follow recommendations and best practices
 
 Removed
 =======
