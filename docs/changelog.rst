@@ -43,6 +43,13 @@ General
 * Updated the ``requirements.txt`` file to be runtime-only and mirror the ``pyproject.toml`` file
 * Moved the ``tests/`` directory from the root level to under ``src/freshpy/utils/`` instead
 
+Removed
+=======
+
+General
+-------
+* Removed the ``setup.py`` file as it is no longer needed for this package
+
 |
 
 -----
