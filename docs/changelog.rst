@@ -27,6 +27,7 @@ General
     * Updated dependency versions to mitigate known vulnerabilities found in earlier versions
     * Added ``bandit`` with SARIF support to the dev dependencies
 * Updated the ``requirements.txt`` file to be runtime-only and mirror the ``pyproject.toml`` file
+* Moved the ``tests/`` directory from the root level to under ``src/freshpy/utils/`` instead
 
 |
 
