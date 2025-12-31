@@ -10,7 +10,13 @@ v3.0.0.dev0
 
 Added
 =====
-TBD
+
+Supporting Modules
+------------------
+Additions to the :doc:`supporting modules <supporting-modules>` are listed below.
+
+* Added the following new test modules:
+    * :py:mod:`freshpy.utils.tests.test_version_utils`
 
 Changed
 =======
@@ -21,6 +27,7 @@ Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
 
 * Completely refactored the :py:mod:`freshpy.utils.version` module to retrieve the version
   from the package metadata and using it to define the ``__version__`` special variable
+* Updated the :py:mod:`freshpy.utils.log_utils` module to always define a default logging level
 
 General
 -------
