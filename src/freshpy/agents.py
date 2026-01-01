@@ -4,7 +4,7 @@
 :Synopsis:          Functions for interacting with Freshservice agents
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     29 Jan 2025
+:Modified Date:     31 Dec 2025
 """
 
 from . import api, errors
@@ -17,7 +17,7 @@ logger = log_utils.initialize_logging(__name__)
 def get_user_info(freshpy_object, lookup_value, verify_ssl=True):
     """This function retrieves user data for a specific agent.
 
-    .. versionadded:: 2.0.0
+    .. version-added:: 2.0.0
 
     :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
     :type freshpy_object: class[freshpy.FreshPy]
@@ -47,7 +47,7 @@ def get_user_info(freshpy_object, lookup_value, verify_ssl=True):
 def _get_user_info_by_email(_freshpy_object, _email, _verify_ssl=True):
     """This function retrieves data for an agent using its email address as a query filter.
 
-    .. versionadded:: 2.0.0
+    .. version-added:: 2.0.0
 
     :param _freshpy_object: The core :py:class:`freshpy.FreshPy` object
     :type _freshpy_object: class[freshpy.FreshPy]
@@ -71,7 +71,7 @@ def _get_user_info_by_email(_freshpy_object, _email, _verify_ssl=True):
 def get_all_agents(freshpy_object, only_active=None, only_inactive=None, verify_ssl=True):
     """This function returns data for all agents with an optional filters for active or inactive users.
 
-    .. versionadded:: 2.0.0
+    .. version-added:: 2.0.0
 
     :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
     :type freshpy_object: class[freshpy.FreshPy]
@@ -90,7 +90,7 @@ def get_all_agents(freshpy_object, only_active=None, only_inactive=None, verify_
         if only_active is True and only_inactive is True:
             exc_msg = 'You cannot use both the only_active and only_inactive filters in the same call.'
             raise errors.exceptions.InvalidFilterError(exc_msg)
-        elif only_active is True:
+        elif only_active:
             filter_string = '?active=true'
         elif only_inactive is True:
             filter_string = '?active=false'
@@ -103,7 +103,7 @@ def get_all_agents(freshpy_object, only_active=None, only_inactive=None, verify_
 def get_agent_id(freshpy_object, email, verify_ssl=True):
     """This function retrieves the Agent ID value for a specific agent.
 
-    .. versionadded:: 2.0.0
+    .. version-added:: 2.0.0
 
     :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
     :type freshpy_object: class[freshpy.FreshPy]
@@ -134,7 +134,7 @@ def get_agent_id(freshpy_object, email, verify_ssl=True):
 def get_assignment_history(freshpy_object, lookup_value, verify_ssl=True):
     """This function retrieves the user assignment history for a specific agent.
 
-    .. versionadded:: 2.0.0
+    .. version-added:: 2.0.0
 
     :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
     :type freshpy_object: class[freshpy.FreshPy]
