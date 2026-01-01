@@ -4,7 +4,7 @@
 :Synopsis:          Collection of exception classes relating to the freshpy library
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     29 Jan 2025
+:Modified Date:     31 Dec 2025
 """
 
 #################
@@ -72,7 +72,7 @@ class DataMismatchError(FreshPyError):
             args = (default_msg,)
         elif 'data' in kwargs:
             multi_types = [list, tuple, set]
-            if type(kwargs['data']) == str:
+            if isinstance(kwargs['data'], str):
                 custom_msg = f"{default_msg.split('data')[0]}'{kwargs['val']}'{default_msg.split('with the')[1]}"
                 custom_msg = custom_msg.replace('sources', 'source')
                 args = (custom_msg,)
