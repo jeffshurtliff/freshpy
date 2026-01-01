@@ -4,7 +4,7 @@
 :Synopsis:          This module handles interactions with the Freshservice REST API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     29 Jan 2025
+:Modified Date:     31 Dec 2025
 """
 
 import requests
@@ -19,7 +19,9 @@ logger = log_utils.initialize_logging(__name__)
 def define_headers():
     """This function defines the headers to use in API calls.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
+
+    :returns: Dictionary defining the minimum required header keys and values for API calls
     """
     headers = {'Content-Type': 'application/json'}
     return headers
@@ -28,7 +30,9 @@ def define_headers():
 def define_auth(api_key):
     """This function defines the authentication dictionary to use in API calls.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
+
+    :returns: Tuple in the appropriate format to be used as API credentials
     """
     credentials = (api_key, 'X')
     return credentials
@@ -37,13 +41,13 @@ def define_auth(api_key):
 def get_request_with_retries(fresh_object, uri, headers=None, return_json=True, verify_ssl=True):
     """This function performs a GET request and will retry several times if a failure occurs.
 
-    .. versionchanged:: 2.0.0
+    .. version-changed:: 2.0.0
        Added error handling for 404 responses and exceptions when converting response to JSON.
 
-    .. versionchanged:: 1.1.0
+    .. version-changed:: 1.1.0
        Added the ability to disable SSL verification on API calls.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
 
     :param fresh_object: The instantiated :py:class:`freshpy.core.FreshPy` object.
     :param uri: The URI to query
@@ -99,10 +103,10 @@ def get_request_with_retries(fresh_object, uri, headers=None, return_json=True, 
 def _report_failed_attempt(_exc_msg, _request_type, _retries):
     """This function reports a failed API call that will be retried.
 
-    .. versionchanged:: 2.0.0
+    .. version-changed:: 2.0.0
        Replaced a generic py:exc:`Exception` with a py:exc:`RuntimeError` exception.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
 
     :param _exc_msg: The exception that was raised within a try/except clause
     :param _request_type: The type of API request (e.g. ``post``, ``put`` or ``get``)
@@ -123,7 +127,7 @@ def _report_failed_attempt(_exc_msg, _request_type, _retries):
 def _raise_exception_for_repeated_timeouts():
     """This function raises an exception when all API attempts (including) retries resulted in a timeout.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
 
     :returns: None
     :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
