@@ -4,7 +4,7 @@
 :Synopsis:          Functions for interacting with Freshservice tickets
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     29 Jan 2025
+:Modified Date:     31 Dec 2025
 """
 
 from . import api, errors
@@ -23,10 +23,10 @@ FILTER_LOGIC_OPERATORS = ['AND', 'OR']
 def get_ticket(freshpy_object, ticket_number, include=None, verify_ssl=True):
     """This function returns the data for a specific ticket.
 
-    .. versionchanged:: 1.1.0
+    .. version-changed:: 1.1.0
        Added the ability to disable SSL verification on API calls.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
 
     :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
     :type freshpy_object: class[freshpy.FreshPy]
@@ -49,10 +49,10 @@ def get_tickets(freshpy_object, include=None, predefined_filter=None, filters=No
                 descending=None, per_page=None, page=None, verify_ssl=True):
     """This function returns a sequence of tickets with optional filters.
 
-    .. versionchanged:: 1.1.0
+    .. version-changed:: 1.1.0
        Added the ability to disable SSL verification on API calls.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
 
     :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
     :type freshpy_object: class[freshpy.FreshPy]
@@ -120,7 +120,7 @@ def _parse_constraints(_include=None, _predefined_filter=None, _requester_id=Non
                        _page=None):
     """This function parses any constraints into a properly constructed query string.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
 
     :param _include: A string or iterable of `embedding <https://api.freshservice.com/#view_a_ticket>`_ options
     :type _include: str, tuple, list, set, None
