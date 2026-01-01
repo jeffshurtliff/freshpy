@@ -16,7 +16,7 @@
 class FreshPyError(Exception):
     """This is the base class for FreshPy exceptions.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     pass
 
@@ -29,7 +29,7 @@ class FreshPyError(Exception):
 class MissingAuthDataError(FreshPyError):
     """This exception is used when authentication data is not supplied and therefore a connection cannot occur.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -47,7 +47,7 @@ class MissingAuthDataError(FreshPyError):
 class CurrentlyUnsupportedError(FreshPyError):
     """This exception is used when a feature or functionality being used is currently unsupported.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -63,7 +63,7 @@ class CurrentlyUnsupportedError(FreshPyError):
 class DataMismatchError(FreshPyError):
     """This exception is used when there is a mismatch between two data sources.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -86,7 +86,7 @@ class DataMismatchError(FreshPyError):
 class InvalidFieldError(FreshPyError):
     """This exception is used when an invalid field is provided.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -102,7 +102,7 @@ class InvalidFieldError(FreshPyError):
 class InvalidFilterError(FreshPyError):
     """This exception is used when an invalid filter for an API call is provided.
 
-    .. versionadded:: 2.0.0
+    .. version-added:: 2.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -115,7 +115,7 @@ class InvalidFilterError(FreshPyError):
 class InvalidURLError(FreshPyError):
     """This exception is used when a provided URL is invalid.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -131,7 +131,10 @@ class InvalidURLError(FreshPyError):
 class MissingRequiredDataError(FreshPyError):
     """This exception is used when a function or method is missing one or more required arguments.
 
-    .. versionadded:: 1.0.0
+    .. version-changed:: 3.0.0
+       It is now possible to specify the missing argument for the init message.
+
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -143,6 +146,10 @@ class MissingRequiredDataError(FreshPyError):
         elif 'init' in args or 'initialize' in args:
             if 'object' in kwargs:
                 custom_msg = f"{init_msg.split('object')[0]}'{kwargs['object']}'{init_msg.split('The')[1]}"
+                args = (custom_msg,)
+            elif 'argument' in kwargs:
+                msg_segment = 'one or more required arguments'
+                custom_msg = f"{init_msg.split(msg_segment)[0]}the \'{kwargs['argument']}\' required argument."
                 args = (custom_msg,)
             else:
                 args = (init_msg,)
@@ -161,7 +168,7 @@ class MissingRequiredDataError(FreshPyError):
 class APIConnectionError(FreshPyError):
     """This exception is used when the API query could not be completed due to connection aborts and/or timeouts.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -174,7 +181,7 @@ class APIConnectionError(FreshPyError):
 class APIRequestError(FreshPyError):
     """This exception is used for generic API request errors when there isn't a more specific exception.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -187,7 +194,7 @@ class APIRequestError(FreshPyError):
 class DELETERequestError(FreshPyError):
     """This exception is used for generic DELETE request errors when there isn't a more specific exception.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -200,7 +207,7 @@ class DELETERequestError(FreshPyError):
 class FeatureNotConfiguredError(FreshPyError):
     """This exception is used when an API request fails because a feature is not configured.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -219,7 +226,7 @@ class FeatureNotConfiguredError(FreshPyError):
 class GETRequestError(FreshPyError):
     """This exception is used for generic GET request errors when there is not a more specific exception.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -242,7 +249,7 @@ class GETRequestError(FreshPyError):
 class InvalidPayloadValueError(FreshPyError):
     """This exception is used when an invalid value is provided for a payload field.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -262,7 +269,7 @@ class InvalidPayloadValueError(FreshPyError):
 class InvalidRequestTypeError(FreshPyError):
     """This exception is used when an invalid API request type is provided.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -276,7 +283,7 @@ class InvalidRequestTypeError(FreshPyError):
 class LookupMismatchError(FreshPyError):
     """This exception is used when a lookup value does not match the supplied lookup type.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -289,7 +296,7 @@ class LookupMismatchError(FreshPyError):
 class NotFoundResponseError(FreshPyError):
     """This exception is used when an API query returns a 404 response and there isn't a more specific class.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -302,7 +309,7 @@ class NotFoundResponseError(FreshPyError):
 class POSTRequestError(FreshPyError):
     """This exception is used for generic POST request errors when there isn't a more specific exception.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -325,7 +332,7 @@ class POSTRequestError(FreshPyError):
 class PUTRequestError(FreshPyError):
     """This exception is used for generic PUT request errors when there isn't a more specific exception.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -353,7 +360,7 @@ class PUTRequestError(FreshPyError):
 class InvalidFilterLogicError(FreshPyError):
     """This exception is used when an invalid filter logic operator is supplied.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
@@ -370,7 +377,7 @@ class InvalidFilterLogicError(FreshPyError):
 class InvalidPredefinedFilterError(FreshPyError):
     """This exception is used when the API query could not be completed due to connection aborts and/or timeouts.
 
-    .. versionadded:: 1.0.0
+    .. version-added:: 1.0.0
     """
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""

@@ -38,6 +38,9 @@ Changes to the :doc:`core-object-methods`.
     * Added the :py:meth:`freshpy.core.FreshPy._determine_ssl_verification` method and called it in relevant
       core object methods to determine the appropriate SSL verification setting
     * Changed the default value of the ``verify_ssl`` parameter in core methods to be ``None`` rather than ``True``
+* Introduced the ability to utilize environment variables instead of passing in settings with parameters
+    * Added the :py:meth:`freshpy.core.FreshPy._get_env_variable_names` method to get the environment variable names
+    * Added...
 
 Supporting Modules
 ------------------
@@ -46,6 +49,8 @@ Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
 * Completely refactored the :py:mod:`freshpy.utils.version` module to retrieve the version
   from the package metadata and using it to define the ``__version__`` special variable
 * Updated the :py:mod:`freshpy.utils.log_utils` module to always define a default logging level
+* Updated the :py:exc:`freshpy.errors.exceptions.MissingRequiredDataError` exception to allow a specific missing
+  argument to be specified for the init message when applicable
 
 General
 -------

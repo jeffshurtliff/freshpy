@@ -7,8 +7,10 @@
 :Modified Date:     31 Dec 2025
 """
 
+import os
 import inspect
 
+import freshpy.errors.exceptions
 from . import api, errors
 from . import tickets as tickets_module
 from . import agents as agents_module
@@ -20,7 +22,7 @@ logger = log_utils.initialize_logging(__name__)
 
 class FreshPy(object):
     """This is the class for the core object leveraged in this library."""
-    def __init__(self, domain=None, api_key=None, verify_ssl=None):
+    def __init__(self, domain=None, api_key=None, env_variables=None, verify_ssl=None):
         """This method instantiates the core FreshPy object.
 
         .. version-changed:: 3.0.0
@@ -28,13 +30,41 @@ class FreshPy(object):
 
         .. version-added:: 1.0.0
         """
-        # Define the current package version
+        # Define the default settings
         self.version = version.get_full_version()
+        self._env_variables = {}
 
-        # Raise an exception if the domain and API key were not supplied
-        # TODO: Add functionality to leverage environment variable for the domain and/or API key
-        if not domain or not api_key:
-            raise errors.exceptions.MissingRequiredDataError('init')
+        # Check for custom environment variable names
+        if env_variables:
+            if not isinstance(env_variables, dict):
+                logger.error("The 'env_variables' parameter must be a dictionary and will be ignored.")
+            else:
+                self._env_variable_names = self._get_env_variable_names(env_variables)
+        else:
+            self._env_variable_names = self._get_env_variable_names()
+
+        # Check for any defined environment variables
+        self._env_variables = self._get_env_variables()
+
+        # Ensure the domain was supplied as it is required and raise an exception if not
+        if domain:
+            logger.debug('The domain value was defined via parameter when instantiating the core object')
+        elif 'domain' in self._env_variables and self._env_variables.get('domain'):
+            domain = self._env_variables.get('domain')
+            logger.debug('The domain value was defined as an environment variable')
+        else:
+            logger.critical('The domain value could not be defined and the object cannot be instantiated')
+            raise errors.exceptions.MissingRequiredDataError('init', argument='domain')
+
+        # Ensure the API key was supplied as it is required and raise an exception if not
+        if api_key:
+            logger.debug('The api_key value was defined via parameter when instantiating the core object')
+        elif 'api_key' in self._env_variables and self._env_variables.get('api_key'):
+            domain = self._env_variables.get('api_key')
+            logger.debug('The api_key value was defined as an environment variable')
+        else:
+            logger.critical('The api_key value could not be defined and the object cannot be instantiated')
+            raise errors.exceptions.MissingRequiredDataError('init', argument='api_key')
 
         # Define the domain
         domain = f'https://{domain}' if domain and not domain.startswith('http') else domain
@@ -115,6 +145,52 @@ class FreshPy(object):
         # Return the final Boolean value indicating if SSL verification should occur
         return ssl_verification
 
+    @staticmethod
+    def _get_env_variable_names(_custom_dict=None):
+        """This function returns the environment variable names to use when checking the OS for environment variables.
+
+        .. version-added:: 3.0.0
+
+        :param _custom_dict: Custom environment variable names to use instead of the defaults (from ``env_variables``
+                             parameter when instantiating the core object)
+        :type _custom_dict: dict, None
+        :returns: Dictionary containing the settings and their associated environment variable names
+        :raises: :py:exc:`freshpy.errors.exceptions.DataMismatchError`
+        """
+        # Define the dictionary with the default environment variable names
+        _env_variable_names = {
+            'domain': 'FRESHPY_DOMAIN',
+            'api_key': 'FRESHPY_API_KEY',
+            'verify_ssl': 'FRESHPY_VERIFY_SSL',
+        }
+
+        # Update the dictionary to use any defined custom names instead of the default names
+        _custom_dict = {} if _custom_dict is None else _custom_dict
+        if not isinstance(_custom_dict, dict):
+            exc_msg = "Cannot parse custom environment variable names as 'env_variables' parameter is not a dictionary."
+            logger.critical(exc_msg)
+            raise freshpy.errors.exceptions.DataMismatchError(exc_msg)
+        if _custom_dict:
+            for _name_key, _name_value in _custom_dict.items():
+                if _name_key in _env_variable_names:
+                    _env_variable_names.update({_name_key: _name_value})
+
+        # Return the finalized dictionary with the mapped environment variable names
+        return _env_variable_names
+
+    def _get_env_variables(self):
+        """This function retrieves any defined environment variables to use with the instantiated core object.
+
+        .. version-added:: 3.0.0
+
+        :returns: Dictionary containing the environment variables and their respective values
+        """
+        _env_variables = {}
+        for _config_name, _var_name in self._env_variable_names.items():
+            _var_value = os.getenv(_var_name)                               # Returns None if not found
+            _env_variables.update({_config_name: _var_value})
+        return _env_variables
+
     def get(self, uri, headers=None, return_json=True, verify_ssl=None):
         """This method performs a GET request against the Freshservice API with multiple retries on failure.
 
@@ -135,7 +211,8 @@ class FreshPy(object):
         :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
         :type verify_ssl: bool
         :returns: The JSON data from the response or the raw :py:mod:`requests` response.
-        :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+        :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                 :py:exc:`freshpy.errors.exceptions.DataMismatchError`
         """
         verify_ssl = self._determine_ssl_verification(verify_ssl)
         return api.get_request_with_retries(self, uri, headers, return_json, verify_ssl=verify_ssl)
@@ -166,7 +243,8 @@ class FreshPy(object):
             :type verify_ssl: bool
             :returns: JSON data with the agent user data
             :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
-                     :py:exc:`freshpy.errors.exceptions.InvalidFieldError`
+                     :py:exc:`freshpy.errors.exceptions.InvalidFieldError`,
+                     :py:exc:`freshpy.errors.exceptions.DataMismatchError`
             """
             verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return agents_module.get_user_info(self.freshpy_object, lookup_value=lookup_value, verify_ssl=verify_ssl)
@@ -186,7 +264,8 @@ class FreshPy(object):
             :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
             :type verify_ssl: bool
             :returns: JSON data with user data for all agents
-            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.DataMismatchError`
             """
             verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return agents_module.get_all_agents(self.freshpy_object, only_active=only_active,
@@ -207,7 +286,8 @@ class FreshPy(object):
             :returns: The Agent ID of the agent as an integer
             :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
                      :py:exc:`freshpy.errors.exceptions.NotFoundResponseError`,
-                     :py:exc:`freshpy.errors.exceptions.InvalidFieldError`
+                     :py:exc:`freshpy.errors.exceptions.InvalidFieldError`,
+                     :py:exc:`freshpy.errors.exceptions.DataMismatchError`
             """
             verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return agents_module.get_agent_id(self.freshpy_object, email=email, verify_ssl=verify_ssl)
@@ -227,7 +307,8 @@ class FreshPy(object):
             :returns: JSON data for the assignment history for the agent
             :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
                      :py:exc:`freshpy.errors.exceptions.NotFoundResponseError`,
-                     :py:exc:`freshpy.errors.exceptions.InvalidFieldError`
+                     :py:exc:`freshpy.errors.exceptions.InvalidFieldError`,
+                     :py:exc:`freshpy.errors.exceptions.DataMismatchError`
             """
             verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return agents_module.get_assignment_history(self.freshpy_object, lookup_value=lookup_value,
@@ -266,7 +347,8 @@ class FreshPy(object):
             :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
             :type verify_ssl: bool
             :returns: JSON data for the given ticket
-            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.DataMismatchError`
             """
             verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return tickets_module.get_ticket(self.freshpy_object, ticket_number=ticket_number, include=include,
@@ -313,7 +395,8 @@ class FreshPy(object):
             :type verify_ssl: bool
             :returns: A list of JSON objects for tickets
             :raises: :py:exc:`freshpy.errors.exceptions.InvalidPredefinedFilterError`,
-                     :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+                     :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.DataMismatchError`
             """
             verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return tickets_module.get_tickets(self.freshpy_object, include=include, predefined_filter=predefined_filter,
