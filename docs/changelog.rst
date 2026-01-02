@@ -37,6 +37,7 @@ Additions to the :doc:`supporting modules <supporting-modules>` are listed below
 * Added the following new test modules:
     * :py:mod:`freshpy.utils.tests.test_log_utils`
     * :py:mod:`freshpy.utils.tests.test_version_utils`
+* Added the new :py:exc:`freshpy.errors.exceptions.InvalidDataTypeError` exception
 
 General
 -------

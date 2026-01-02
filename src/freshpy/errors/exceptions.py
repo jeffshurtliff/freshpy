@@ -4,7 +4,7 @@
 :Synopsis:          Collection of exception classes relating to the freshpy library
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     31 Dec 2025
+:Modified Date:     02 Jan 2026
 """
 
 #################
@@ -80,6 +80,19 @@ class DataMismatchError(FreshPyError):
                 custom_section = f"'{kwargs['data'][0]}' and '{kwargs['data'][1]}'"
                 custom_msg = f"{default_msg.split('data sources')[0]}{custom_section}{default_msg.split('with the')[1]}"
                 args = (custom_msg,)
+        super().__init__(*args)
+
+
+class InvalidDataTypeError(FreshPyError):
+    def __init__(self, *args, **kwargs):
+        """This method defines the default or custom message for the exception."""
+        default_msg = "The data type for the parameter is invalid."
+        if not (args or kwargs):
+            args = (default_msg,)
+        if 'param' in kwargs:
+            new_str_segment = f"'{kwargs['param']}' parameter"
+            custom_msg = f"{default_msg.replace('parameter', new_str_segment)}"
+            args = (custom_msg,)
         super().__init__(*args)
 
 
