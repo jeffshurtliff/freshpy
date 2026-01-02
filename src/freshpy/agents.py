@@ -208,3 +208,42 @@ def get_all_agent_roles(freshpy_object, verify_ssl=DEFAULT_SSL_VERIFY):
     """
     uri = 'roles'
     return api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)
+
+
+def get_agent_group(freshpy_object, group_id, verify_ssl=DEFAULT_SSL_VERIFY):
+    """This function returns data for a specific agent group.
+
+    .. version-added:: 3.0.0
+
+    :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
+    :type freshpy_object: class[freshpy.FreshPy]
+    :param group_id: The numeric ID of the agent group
+    :type group_id: str, int
+    :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+    :type verify_ssl: bool
+    :returns: A JSON-formatted dictionary with the agent group data
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+             :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`
+    """
+    core_utils.validate_numeric_value(group_id, 'group_id')
+    uri = f'groups/{group_id}'
+    return api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)
+
+
+def get_all_agent_groups(freshpy_object, verify_ssl=DEFAULT_SSL_VERIFY):
+    """This function returns data for all agent groups.
+
+    .. version-added:: 3.0.0
+
+    :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
+    :type freshpy_object: class[freshpy.FreshPy]
+    :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+    :type verify_ssl: bool
+    :returns: A JSON-formatted dictionary with the agent group data
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+             :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`
+    """
+    uri = 'groups'
+    return api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)

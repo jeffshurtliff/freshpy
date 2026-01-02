@@ -454,6 +454,38 @@ class FreshPy(object):
             verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return agents_module.get_all_agent_roles(self.freshpy_object, verify_ssl=verify_ssl)
 
+        def get_agent_group(self, group_id, verify_ssl=None):
+            """This method returns data for a specific agent group.
+
+            .. version-added:: 3.0.0
+
+            :param group_id: The numeric ID of the agent group
+            :type group_id: str, int
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: A JSON-formatted dictionary with the agent group data
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+                     :py:exc:`freshpy.errors.exceptions.APIRequestError`
+            """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
+            return agents_module.get_agent_group(self.freshpy_object, group_id=group_id, verify_ssl=verify_ssl)
+
+        def get_all_agent_groups(self, verify_ssl=None):
+            """This method returns data for all agent groups.
+
+            .. version-added:: 3.0.0
+
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: A JSON-formatted dictionary with the agent group data
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+                     :py:exc:`freshpy.errors.exceptions.APIRequestError`
+            """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
+            return agents_module.get_all_agent_groups(self.freshpy_object, verify_ssl=verify_ssl)
+
     class Tickets(object):
         """This class includes methods associated with Freshservice tickets."""
         def __init__(self, freshpy_object):

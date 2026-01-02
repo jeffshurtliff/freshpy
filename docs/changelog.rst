@@ -38,6 +38,8 @@ Additions to the :doc:`primary modules <primary-modules>`.
 * Added the :py:func:`freshpy.api._raise_exception_for_api_method` function
 * Added the :py:func:`freshpy.agents.get_agent_role` function
 * Added the :py:func:`freshpy.agents.get_all_agent_roles` function
+* Added the :py:func:`freshpy.agents.get_agent_group` function
+* Added the :py:func:`freshpy.agents.get_all_agent_groups` function
 
 Supporting Modules
 ------------------
