@@ -200,7 +200,8 @@ class FreshPy(object):
             _env_variables.update({_config_name: _var_value})
         return _env_variables
 
-    def get(self, uri, headers=None, return_json=True, verify_ssl=None):
+    def get(self, uri, headers=None, params=None, return_json=True, timeout=api.DEFAULT_TIMEOUT_SECONDS,
+            verify_ssl=None):
         """This method performs a GET request against the Freshservice API with multiple retries on failure.
 
         .. version-changed:: 3.0.0
@@ -215,8 +216,12 @@ class FreshPy(object):
         :type uri: string
         :param headers: The HTTP headers to utilize in the REST API call
         :type headers: dict, None
+        :param params: The query parameters (where applicable)
+        :type params: dict, None
         :param return_json: Determines if JSON data should be returned
         :type return_json: bool
+        :param timeout: The timeout period in seconds (defaults to ``30``)
+        :type timeout: int, str, None
         :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
         :type verify_ssl: bool
         :returns: The JSON data from the response or the raw :py:mod:`requests` response.
@@ -224,7 +229,8 @@ class FreshPy(object):
                  :py:exc:`freshpy.errors.exceptions.DataMismatchError`
         """
         verify_ssl = self._determine_ssl_verification(verify_ssl)
-        return api.get_request_with_retries(self, uri, headers, return_json, verify_ssl=verify_ssl)
+        return api.get_request_with_retries(self, uri=uri, headers=headers, params=params, return_json=return_json,
+                                            timeout=timeout, verify_ssl=verify_ssl)
 
     def post(self, uri, payload, params=None, headers=None, timeout=api.DEFAULT_TIMEOUT_SECONDS,
              show_full_error=True, return_json=True, verify_ssl=None):
@@ -548,7 +554,8 @@ class FreshPy(object):
             :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
             """
             verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
-            return workspaces_module.get_workspace(self.freshpy_object, workspace_id, verify_ssl=verify_ssl)
+            return workspaces_module.get_workspace(self.freshpy_object, workspace_id=workspace_id,
+                                                   verify_ssl=verify_ssl)
 
         def get_all_workspaces(self, verify_ssl=None):
             """This method returns data on all workspaces.

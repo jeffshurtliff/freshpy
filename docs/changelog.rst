@@ -70,6 +70,7 @@ Changes to the :doc:`core-object-methods`.
 * Introduced the ability to utilize environment variables instead of passing in settings with parameters
     * Added the :py:meth:`freshpy.core.FreshPy._get_env_variable_names` method to get the environment variable names
     * Added the :py:meth:`freshpy.core.FreshPy._get_env_variables` method to retrieve the defined environment variables
+* Added the parameters ``params`` and ``timeout`` to the :py:meth:`freshpy.core.FreshPy.get` method
 
 Primary Modules
 ---------------
