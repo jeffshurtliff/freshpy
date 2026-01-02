@@ -42,7 +42,8 @@ def define_auth(api_key):
     return credentials
 
 
-def get_request_with_retries(freshpy_object, uri, headers=None, return_json=True, verify_ssl=DEFAULT_SSL_VERIFY):
+def get_request_with_retries(freshpy_object, uri, headers=None, params=None, return_json=True,
+                             timeout=DEFAULT_TIMEOUT_SECONDS, verify_ssl=DEFAULT_SSL_VERIFY):
     """This function performs a GET request and will retry several times if a failure occurs.
 
     .. version-changed:: 3.0.0
@@ -56,8 +57,12 @@ def get_request_with_retries(freshpy_object, uri, headers=None, return_json=True
     :type uri: string
     :param headers: The HTTP headers to utilize in the REST API call
     :type headers: dict, None
+    :param params: The query parameters (where applicable)
+    :type params: dict, None
     :param return_json: Determines if JSON data should be returned
     :type return_json: bool
+    :param timeout: The timeout period in seconds (defaults to ``30``)
+    :type timeout: int, str, None
     :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
     :type verify_ssl: bool
     :returns: The JSON data from the response or the raw :py:mod:`requests` response.
@@ -78,7 +83,8 @@ def get_request_with_retries(freshpy_object, uri, headers=None, return_json=True
     retries, response = 0, None
     while retries <= 5:
         try:
-            response = requests.get(query_url, headers=headers, auth=credentials, verify=verify_ssl)
+            response = requests.get(query_url, headers=headers, auth=credentials, params=params,
+                                    timeout=timeout, verify=verify_ssl)
             break
         except Exception as exc_msg:
             _report_failed_attempt(exc_msg, 'get', retries)
@@ -100,7 +106,7 @@ def get_request_with_retries(freshpy_object, uri, headers=None, return_json=True
                 #     'status': 'exception',
                 #     'status_code': None,
                 #     'exception_type': errors.handlers.get_exception_type(exc),
-                #     'error_message': f'{exc}',
+                #     'exception_message': f'{exc}',
                 # }
                 exc_type = errors.handlers.get_exception_type(exc)
                 logger.error(f'Failed to convert the API response to JSON format due to the following {exc_type} '

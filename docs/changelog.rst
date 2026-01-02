@@ -77,6 +77,7 @@ Changes to the :doc:`primary modules <primary-modules>`.
 
 * Updated the :py:func:`freshpy.api.get_request_with_retries` function to return the full Response object if the
   response cannot be successfully converted to JSON rather than just returning error details
+* Added the parameters ``params`` and ``timeout`` to the :py:func:`freshpy.api.get_request_with_retries` function
 * Updated the :py:func:`freshpy.api._report_failed_attempt` function to use the logging functionality
 * Updated the :py:func:`freshpy.api._raise_exception_for_repeated_timeouts` function to use the logging functionality
 
