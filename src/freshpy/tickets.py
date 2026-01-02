@@ -4,7 +4,7 @@
 :Synopsis:          Functions for interacting with Freshservice tickets
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     31 Dec 2025
+:Modified Date:     02 Jan 2026
 """
 
 from . import api, errors
@@ -96,7 +96,24 @@ def get_tickets(freshpy_object, include=None, predefined_filter=None, filters=No
     return api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
 
 
+def get_ticket_fields(freshpy_object, verify_ssl=True):
+    """This function retrieves the standard and custom fields that exist for tickets.
+
+    .. version-added:: 3.0.0
+
+    :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
+    :type freshpy_object: class[freshpy.FreshPy]
+    :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+    :type verify_ssl: bool
+    :returns: Dictionary (JSON) with the ticket field data
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+    """
+    uri = 'ticket_fields'
+    return api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
+
+
 def _parse_filters(_filters=None, _logic='AND'):
+    """This function parses any filters to be used in an API call."""
     _filters = {} if not _filters else _filters
     if _logic.upper() not in FILTER_LOGIC_OPERATORS:
         raise errors.exceptions.InvalidFilterLogicError(value=_logic)
