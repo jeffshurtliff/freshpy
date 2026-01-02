@@ -35,7 +35,7 @@ def get_user_info(freshpy_object, lookup_value, verify_ssl=True):
         agent_data = agent_data['agents'][0]
     elif isinstance(lookup_value, int) or (isinstance(lookup_value, str) and lookup_value.isdigit()):
         uri = f'agents/{lookup_value}'
-        agent_data = api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
+        agent_data = api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)
         agent_data = agent_data['agent'] if 'agent' in agent_data else agent_data
     else:
         raise errors.exceptions.InvalidFieldError('An invalid Agent ID or email address was provided.')
@@ -157,4 +157,4 @@ def get_assignment_history(freshpy_object, lookup_value, verify_ssl=True):
 
     # Construct the URI and perform the API call
     uri = f'users/{agent_id}/assignment-history'
-    return api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
+    return api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)

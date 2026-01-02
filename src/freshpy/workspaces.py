@@ -30,7 +30,7 @@ def get_workspace(freshpy_object, workspace_id, verify_ssl=True):
     """
     # TODO: Validate that a valid ID (integer) is provided
     uri = f'workspaces/{workspace_id}'
-    return api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
+    return api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)
 
 
 def get_all_workspaces(freshpy_object, verify_ssl=True):
@@ -46,4 +46,4 @@ def get_all_workspaces(freshpy_object, verify_ssl=True):
     :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
     """
     uri = 'workspaces'
-    return api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
+    return api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)

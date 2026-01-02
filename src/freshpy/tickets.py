@@ -42,7 +42,7 @@ def get_ticket(freshpy_object, ticket_number, include=None, verify_ssl=True):
     core_utils.validate_numeric_value(ticket_number, 'ticket_number')
     uri = f'tickets/{ticket_number}'
     uri += _parse_constraints(_include=include)
-    return api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
+    return api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)
 
 
 def get_tickets(freshpy_object, include=None, predefined_filter=None, filters=None, filter_logic='AND',
@@ -94,7 +94,7 @@ def get_tickets(freshpy_object, include=None, predefined_filter=None, filters=No
                                   _requester_email=requester_email, _ticket_type=ticket_type,
                                   _updated_since=updated_since, _ascending=ascending, _descending=descending,
                                   _per_page=per_page, _page=page)
-    return api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
+    return api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)
 
 
 def get_ticket_fields(freshpy_object, workspace_id=None, verify_ssl=True):
@@ -115,7 +115,7 @@ def get_ticket_fields(freshpy_object, workspace_id=None, verify_ssl=True):
     if workspace_id:
         core_utils.validate_numeric_value(workspace_id, 'workspace_id')
         uri += f'?workspace_id={workspace_id}'
-    return api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
+    return api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)
 
 
 def _parse_filters(_filters=None, _logic='AND'):
