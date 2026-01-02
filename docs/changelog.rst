@@ -53,6 +53,8 @@ Additions to the :doc:`supporting modules <supporting-modules>` are listed below
     * :py:exc:`freshpy.errors.exceptions.PATCHRequestError`
 * Added the :py:func:`freshpy.errors.handlers.get_exception_type` function
 * Added the :py:func:`freshpy.utils.core_utils.validate_numeric_value` function
+* Added the :py:mod:`freshpy.models.enums` module with defined strongly-typed, immutable enumerations for
+  ticket-related constants
 
 General
 -------
