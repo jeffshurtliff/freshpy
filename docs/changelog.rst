@@ -18,6 +18,7 @@ Additions to the :doc:`core-object-methods`.
 * Added the :py:meth:`freshpy.core.FreshPy.post` method
 * Added the :py:meth:`freshpy.core.FreshPy.put` method
 * Added the :py:meth:`freshpy.core.FreshPy.patch` method
+* Added the :py:meth:`freshpy.core.FreshPy.Agents.get_all_agent_roles` method
 * Added the :py:meth:`freshpy.core.FreshPy.Tickets.get_ticket_fields` method
 * Added the :py:class:`freshpy.core.FreshPy.Workspaces` inner class with the following methods:
     * :py:meth:`freshpy.core.FreshPy.Workspaces.get_workspace`
@@ -34,6 +35,7 @@ Additions to the :doc:`primary modules <primary-modules>`.
     * :py:func:`freshpy.workspaces.get_all_workspaces`
 * Added the :py:func:`freshpy.api.api_call_with_payload` function
 * Added the :py:func:`freshpy.api._raise_exception_for_api_method` function
+* Added the :py:func:`freshpy.agents.get_all_agent_roles` function
 
 Supporting Modules
 ------------------

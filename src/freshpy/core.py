@@ -156,7 +156,7 @@ class FreshPy(object):
 
     @staticmethod
     def _get_env_variable_names(_custom_dict=None):
-        """This function returns the environment variable names to use when checking the OS for environment variables.
+        """This method returns the environment variable names to use when checking the OS for environment variables.
 
         .. version-added:: 3.0.0
 
@@ -188,7 +188,7 @@ class FreshPy(object):
         return _env_variable_names
 
     def _get_env_variables(self):
-        """This function retrieves any defined environment variables to use with the instantiated core object.
+        """This method retrieves any defined environment variables to use with the instantiated core object.
 
         .. version-added:: 3.0.0
 
@@ -338,7 +338,7 @@ class FreshPy(object):
             self.freshpy_object = freshpy_object
 
         def get_user_info(self, lookup_value, verify_ssl=None):
-            """This function retrieves user data for a specific agent.
+            """This method retrieves user data for a specific agent.
 
             .. version-changed:: 3.0.0
                Changed the default ``verify_ssl`` parameter to be ``None`` and called method to check SSL verification
@@ -358,7 +358,7 @@ class FreshPy(object):
             return agents_module.get_user_info(self.freshpy_object, lookup_value=lookup_value, verify_ssl=verify_ssl)
 
         def get_all_agents(self, only_active=None, only_inactive=None, verify_ssl=None):
-            """This function returns data for all agents with an optional filters for active or inactive users.
+            """This method returns data for all agents with an optional filters for active or inactive users.
 
             .. version-changed:: 3.0.0
                Changed the default ``verify_ssl`` parameter to be ``None`` and called method to check SSL verification
@@ -380,7 +380,7 @@ class FreshPy(object):
                                                 only_inactive=only_inactive, verify_ssl=verify_ssl)
 
         def get_agent_id(self, email, verify_ssl=None):
-            """This function retrieves the Agent ID value for a specific agent.
+            """This method retrieves the Agent ID value for a specific agent.
 
             .. version-changed:: 3.0.0
                Changed the default ``verify_ssl`` parameter to be ``None`` and called method to check SSL verification
@@ -401,7 +401,7 @@ class FreshPy(object):
             return agents_module.get_agent_id(self.freshpy_object, email=email, verify_ssl=verify_ssl)
 
         def get_assignment_history(self, lookup_value, verify_ssl=None):
-            """This function retrieves the user assignment history for a specific agent.
+            """This method retrieves the user assignment history for a specific agent.
 
             .. version-changed:: 3.0.0
                Changed the default ``verify_ssl`` parameter to be ``None`` and called method to check SSL verification
@@ -421,6 +421,21 @@ class FreshPy(object):
             verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return agents_module.get_assignment_history(self.freshpy_object, lookup_value=lookup_value,
                                                         verify_ssl=verify_ssl)
+
+        def get_all_agent_roles(self, verify_ssl=None):
+            """This method returns data for all agent roles.
+
+            .. version-added:: 3.0.0
+
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: A JSON-formatted dictionary with the agent role data
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+                     :py:exc:`freshpy.errors.exceptions.APIRequestError`
+            """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
+            return agents_module.get_all_agent_roles(self.freshpy_object, verify_ssl=verify_ssl)
 
     class Tickets(object):
         """This class includes methods associated with Freshservice tickets."""

@@ -4,10 +4,11 @@
 :Synopsis:          Functions for interacting with Freshservice agents
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     31 Dec 2025
+:Modified Date:     02 Jan 2026
 """
 
 from . import api, errors
+from .api import DEFAULT_SSL_VERIFY
 from .utils import core_utils, log_utils
 
 # Initialize logging
@@ -27,6 +28,8 @@ def get_user_info(freshpy_object, lookup_value, verify_ssl=True):
     :type verify_ssl: bool
     :returns: JSON data with the agent user data
     :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+             :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`,
              :py:exc:`freshpy.errors.exceptions.InvalidFieldError`
     """
     # Identify the lookup value and retrieve the data
@@ -57,6 +60,8 @@ def _get_user_info_by_email(_freshpy_object, _email, _verify_ssl=True):
     :type _verify_ssl: bool
     :returns: JSON data with the agent user data
     :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+             :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`,
              :py:exc:`freshpy.errors.exceptions.InvalidFieldError`
     """
     # Validate the provided email address
@@ -82,7 +87,9 @@ def get_all_agents(freshpy_object, only_active=None, only_inactive=None, verify_
     :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
     :type verify_ssl: bool
     :returns: JSON data with user data for all agents
-    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+             :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`
     """
     # Define the filter string if necessary
     filter_string = ''
@@ -113,6 +120,8 @@ def get_agent_id(freshpy_object, email, verify_ssl=True):
     :type verify_ssl: bool
     :returns: The Agent ID of the agent as an integer
     :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+             :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`,
              :py:exc:`freshpy.errors.exceptions.NotFoundResponseError`,
              :py:exc:`freshpy.errors.exceptions.InvalidFieldError`
     """
@@ -144,6 +153,8 @@ def get_assignment_history(freshpy_object, lookup_value, verify_ssl=True):
     :type verify_ssl: bool
     :returns: JSON data for the assignment history for the agent
     :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+             :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`,
              :py:exc:`freshpy.errors.exceptions.NotFoundResponseError`,
              :py:exc:`freshpy.errors.exceptions.InvalidFieldError`
     """
@@ -157,4 +168,22 @@ def get_assignment_history(freshpy_object, lookup_value, verify_ssl=True):
 
     # Construct the URI and perform the API call
     uri = f'users/{agent_id}/assignment-history'
+    return api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)
+
+
+def get_all_agent_roles(freshpy_object, verify_ssl=DEFAULT_SSL_VERIFY):
+    """This function returns data for all agent roles.
+
+    .. version-added:: 3.0.0
+
+    :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
+    :type freshpy_object: class[freshpy.FreshPy]
+    :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+    :type verify_ssl: bool
+    :returns: A JSON-formatted dictionary with the agent role data
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+             :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`
+    """
+    uri = 'roles'
     return api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)
