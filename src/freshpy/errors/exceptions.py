@@ -7,6 +7,9 @@
 :Modified Date:     02 Jan 2026
 """
 
+# Define constants
+FOLLOWING_SEGMENT = ' with the following'
+
 #################
 # Base Exception
 #################
@@ -34,7 +37,7 @@ class MissingAuthDataError(FreshPyError):
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
         default_msg = "The authentication data was not provided and a connection cannot be established."
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         super().__init__(*args)
 
@@ -52,7 +55,7 @@ class CurrentlyUnsupportedError(FreshPyError):
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
         default_msg = "This feature is currently unsupported at this time."
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         else:
             custom_msg = f"The '{args[0]}' {default_msg.split('This ')[1]}"
@@ -68,7 +71,7 @@ class DataMismatchError(FreshPyError):
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
         default_msg = "A data mismatch was found with the data sources."
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         elif 'data' in kwargs:
             multi_types = [list, tuple, set]
@@ -87,7 +90,7 @@ class InvalidDataTypeError(FreshPyError):
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
         default_msg = "The data type for the parameter is invalid."
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         if 'param' in kwargs:
             new_str_segment = f"'{kwargs['param']}' parameter"
@@ -104,7 +107,7 @@ class InvalidFieldError(FreshPyError):
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
         default_msg = "The field that was provided is invalid."
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         elif 'val' in kwargs:
             custom_msg = f"{default_msg.split('field ')[0]}'{kwargs['val']}'{default_msg.split('The')[1]}"
@@ -120,7 +123,7 @@ class InvalidFilterError(FreshPyError):
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
         default_msg = "The supplied filter is invalid."
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         super().__init__(*args)
 
@@ -133,7 +136,7 @@ class InvalidURLError(FreshPyError):
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
         default_msg = "The provided URL is invalid"
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         elif 'url' in kwargs:
             custom_msg = f"{default_msg.split('is')[0]}'{kwargs['url']}'{default_msg.split('URL')[1]}"
@@ -154,7 +157,7 @@ class MissingRequiredDataError(FreshPyError):
         default_msg = "Missing one or more required parameters"
         init_msg = "The object failed to initialize as it is missing one or more required arguments."
         param_msg = "The required parameter 'PARAMETER_NAME' is not defined"
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         elif 'init' in args or 'initialize' in args:
             if 'object' in kwargs:
@@ -186,7 +189,7 @@ class APIConnectionError(FreshPyError):
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
         default_msg = "The API query could not be completed due to connection aborts and/or timeouts."
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         super().__init__(*args)
 
@@ -199,7 +202,7 @@ class APIRequestError(FreshPyError):
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
         default_msg = "The API request did not return a successful response."
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         super().__init__(*args)
 
@@ -212,7 +215,7 @@ class DELETERequestError(FreshPyError):
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
         default_msg = "The DELETE request did not return a successful response."
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         super().__init__(*args)
         
@@ -231,7 +234,7 @@ class FeatureNotConfiguredError(FreshPyError):
             if 'feature' in kwargs:
                 exc_msg = exc_msg.replace("feature", f"{kwargs['feature']} feature")
             args = (exc_msg,)
-        elif not (args or kwargs):
+        elif not (args or kwargs) or args[0] is None:
             args = (exc_msg,)
         super().__init__(*args)
 
@@ -252,9 +255,9 @@ class GETRequestError(FreshPyError):
             if 'message' in kwargs:
                 custom_msg = f"{custom_msg} {kwargs['message']}"
             else:
-                custom_msg = custom_msg.split(' with the following')[0] + "."
+                custom_msg = custom_msg.split(FOLLOWING_SEGMENT)[0] + "."
             args = (custom_msg,)
-        elif not (args or kwargs):
+        elif not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         super().__init__(*args)
         
@@ -268,7 +271,7 @@ class InvalidPayloadValueError(FreshPyError):
         """This method defines the default or custom message for the exception."""
         default_msg = "An invalid payload value was provided."
         custom_msg = "The invalid payload value 'X' was provided for the 'Y' field."
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         elif 'value' in kwargs:
             if 'field' in kwargs:
@@ -288,7 +291,7 @@ class InvalidRequestTypeError(FreshPyError):
         """This method defines the default or custom message for the exception."""
         default_msg = "The supplied request type for the API is not recognized. (Examples of valid " + \
                       "request types include 'POST' and 'PUT')"
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         super().__init__(*args)
 
@@ -301,7 +304,7 @@ class LookupMismatchError(FreshPyError):
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
         default_msg = "The supplied lookup type for the API does not match the value that was provided."
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         super().__init__(*args)
 
@@ -314,7 +317,30 @@ class NotFoundResponseError(FreshPyError):
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
         default_msg = "The API query returned a 404 response."
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
+            args = (default_msg,)
+        super().__init__(*args)
+
+
+class PATCHRequestError(FreshPyError):
+    """This exception is used for generic PATCH request errors when there isn't a more specific exception.
+
+    .. version-added:: 3.0.0
+    """
+    def __init__(self, *args, **kwargs):
+        """This method defines the default or custom message for the exception."""
+        default_msg = "The PATCH request did not return a successful response."
+        custom_msg = "The PATCH request failed with the following message:"
+        if 'status_code' in kwargs or 'message' in kwargs:
+            if 'status_code' in kwargs:
+                status_code_msg = f"returned the {kwargs['status_code']} status code"
+                custom_msg = custom_msg.replace('failed', status_code_msg)
+            if 'message' in kwargs:
+                custom_msg = f"{custom_msg} {kwargs['message']}"
+            else:
+                custom_msg = custom_msg.split(FOLLOWING_SEGMENT)[0] + "."
+            args = (custom_msg,)
+        elif not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         super().__init__(*args)
 
@@ -335,9 +361,9 @@ class POSTRequestError(FreshPyError):
             if 'message' in kwargs:
                 custom_msg = f"{custom_msg} {kwargs['message']}"
             else:
-                custom_msg = custom_msg.split(' with the following')[0] + "."
+                custom_msg = custom_msg.split(FOLLOWING_SEGMENT)[0] + "."
             args = (custom_msg,)
-        elif not (args or kwargs):
+        elif not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         super().__init__(*args)
 
@@ -358,9 +384,9 @@ class PUTRequestError(FreshPyError):
             if 'message' in kwargs:
                 custom_msg = f"{custom_msg} {kwargs['message']}"
             else:
-                custom_msg = custom_msg.split(' with the following')[0] + "."
+                custom_msg = custom_msg.split(FOLLOWING_SEGMENT)[0] + "."
             args = (custom_msg,)
-        elif not (args or kwargs):
+        elif not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         super().__init__(*args)
 
@@ -379,7 +405,7 @@ class InvalidFilterLogicError(FreshPyError):
         """This method defines the default or custom message for the exception."""
         default_msg = "An invalid filter logic operator was provided."
         custom_msg = "The filter logic operator 'X' is invalid."
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         elif 'value' in kwargs:
             custom_msg = custom_msg.replace('X', kwargs['value'])
@@ -396,7 +422,7 @@ class InvalidPredefinedFilterError(FreshPyError):
         """This method defines the default or custom message for the exception."""
         default_msg = "An invalid predefined filter was provided."
         custom_msg = "The provided filter 'X' is not a valid predefined filter."
-        if not (args or kwargs):
+        if not (args or kwargs) or args[0] is None:
             args = (default_msg,)
         elif 'value' in kwargs:
             custom_msg = custom_msg.replace('X', kwargs['value'])

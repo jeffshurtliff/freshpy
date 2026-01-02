@@ -29,6 +29,8 @@ Additions to the :doc:`primary modules <primary-modules>`.
 * Added the :py:mod:`freshpy.workspaces` module with the following functions:
     * :py:func:`freshpy.workspaces.get_workspace`
     * :py:func:`freshpy.workspaces.get_all_workspaces`
+* Added the :py:func:`freshpy.api.api_call_with_payload` function
+* Added the :py:func:`freshpy.api._raise_exception_for_api_method` function
 
 Supporting Modules
 ------------------
@@ -37,7 +39,10 @@ Additions to the :doc:`supporting modules <supporting-modules>` are listed below
 * Added the following new test modules:
     * :py:mod:`freshpy.utils.tests.test_log_utils`
     * :py:mod:`freshpy.utils.tests.test_version_utils`
-* Added the new :py:exc:`freshpy.errors.exceptions.InvalidDataTypeError` exception
+* Added the new custom exception classes:
+    * :py:exc:`freshpy.errors.exceptions.InvalidDataTypeError`
+    * :py:exc:`freshpy.errors.exceptions.PATCHRequestError`
+* Added the :py:func:`freshpy.errors.handlers.get_exception_type` function
 * Added the :py:func:`freshpy.utils.core_utils.validate_numeric_value` function
 
 General
@@ -61,7 +66,14 @@ Changes to the :doc:`core-object-methods`.
     * Changed the default value of the ``verify_ssl`` parameter in core methods to be ``None`` rather than ``True``
 * Introduced the ability to utilize environment variables instead of passing in settings with parameters
     * Added the :py:meth:`freshpy.core.FreshPy._get_env_variable_names` method to get the environment variable names
-    * Added...
+    * Added the :py:meth:`freshpy.core.FreshPy._get_env_variables` method to retrieve the defined environment variables
+
+Primary Modules
+---------------
+Changes to the :doc:`primary modules <primary-modules>`.
+
+* Updated the :py:func:`freshpy.api._report_failed_attempt` function to use the logging functionality
+* Updated the :py:func:`freshpy.api._raise_exception_for_repeated_timeouts` function to use the logging functionality
 
 Supporting Modules
 ------------------
@@ -70,6 +82,8 @@ Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
 * Completely refactored the :py:mod:`freshpy.utils.version` module to retrieve the version
   from the package metadata and using it to define the ``__version__`` special variable
 * Updated the :py:mod:`freshpy.utils.log_utils` module to always define a default logging level
+* Updated all custom exceptions in :py:mod:`freshpy.errors.exceptions` to display the default message if a ``None``
+  value is passed to the exception class
 * Updated the :py:exc:`freshpy.errors.exceptions.MissingRequiredDataError` exception to allow a specific missing
   argument to be specified for the init message when applicable
 
