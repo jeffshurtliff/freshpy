@@ -414,11 +414,13 @@ class FreshPy(object):
                                               ticket_type=ticket_type, updated_since=updated_since, ascending=ascending,
                                               descending=descending, verify_ssl=verify_ssl)
 
-        def get_ticket_fields(self, verify_ssl=None):
+        def get_ticket_fields(self, workspace_id=None, verify_ssl=None):
             """This method retrieves the standard and custom fields that exist for tickets.
 
             .. version-added:: 3.0.0
 
+            :param workspace_id: The ID of a specific workspace (defaults to primary workspace if not specified)
+            :type workspace_id: str, int, None
             :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
             :type verify_ssl: bool
             :returns: Dictionary (JSON) with the ticket field data
@@ -426,7 +428,7 @@ class FreshPy(object):
                      :py:exc:`freshpy.errors.exceptions.DataMismatchError`
             """
             verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
-            return tickets_module.get_ticket_fields(self.freshpy_object, verify_ssl=verify_ssl)
+            return tickets_module.get_ticket_fields(self.freshpy_object, workspace_id=workspace_id, verify_ssl=verify_ssl)
 
     class Workspaces(object):
         """This class includes methods associated with Freshservice workspaces/clients."""

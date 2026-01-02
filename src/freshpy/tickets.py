@@ -104,7 +104,7 @@ def get_ticket_fields(freshpy_object, workspace_id=None, verify_ssl=True):
 
     :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
     :type freshpy_object: class[freshpy.FreshPy]
-    :param workspace_id: The ID of a specific workspace to query (defaults to primary workspace if not specified)
+    :param workspace_id: The ID of a specific workspace (defaults to primary workspace if not specified)
     :type workspace_id: str, int, None
     :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
     :type verify_ssl: bool
