@@ -80,7 +80,7 @@ def validate_numeric_value(value, param_name=None):
 
     # Define an exception message when necessary
     if not any((isinstance(value, str), isinstance(value, int))):
-        exc_msg = f"The {param_str_segment} has a(n) '{type(value)}' type but must be an integer or string"
+        exc_msg = f"The {param_str_segment} has a(n) '{type(value).__name__}' type but must be an integer or string"
     elif isinstance(value, str) and not value.isdigit():
         exc_msg = 'The id value must be a whole number (integer) if provided as a string'
     else:
