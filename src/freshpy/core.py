@@ -422,6 +422,23 @@ class FreshPy(object):
             return agents_module.get_assignment_history(self.freshpy_object, lookup_value=lookup_value,
                                                         verify_ssl=verify_ssl)
 
+        def get_agent_role(self, role_id, verify_ssl=None):
+            """This method returns data for a specific agent role.
+
+            .. version-added:: 3.0.0
+
+            :param role_id: The numeric ID of the agent role
+            :type role_id: str, int
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: A JSON-formatted dictionary with the agent role data
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+                     :py:exc:`freshpy.errors.exceptions.APIRequestError`
+            """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
+            return agents_module.get_agent_role(self.freshpy_object, role_id=role_id, verify_ssl=verify_ssl)
+
         def get_all_agent_roles(self, verify_ssl=None):
             """This method returns data for all agent roles.
 
