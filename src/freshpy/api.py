@@ -15,6 +15,10 @@ from .utils import log_utils
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
 
+# Define constants
+DEFAULT_TIMEOUT_SECONDS = 30
+DEFAULT_SSL_VERIFY = True
+
 
 def define_headers():
     """This function defines the headers to use in API calls.
@@ -38,7 +42,7 @@ def define_auth(api_key):
     return credentials
 
 
-def get_request_with_retries(freshpy_object, uri, headers=None, return_json=True, verify_ssl=True):
+def get_request_with_retries(freshpy_object, uri, headers=None, return_json=True, verify_ssl=DEFAULT_SSL_VERIFY):
     """This function performs a GET request and will retry several times if a failure occurs.
 
     .. version-changed:: 3.0.0
@@ -91,17 +95,22 @@ def get_request_with_retries(freshpy_object, uri, headers=None, return_json=True
         else:
             try:
                 response = response.json()
-            except Exception as exc_msg:
-                response = {
-                    'status': 'exception',
-                    'status_code': None,
-                    'error_message': exc_msg,
-                }
+            except Exception as exc:
+                # response = {
+                #     'status': 'exception',
+                #     'status_code': None,
+                #     'exception_type': errors.handlers.get_exception_type(exc),
+                #     'error_message': f'{exc}',
+                # }
+                exc_type = errors.handlers.get_exception_type(exc)
+                logger.error(f'Failed to convert the API response to JSON format due to the following {exc_type} '
+                             f'exception and the full Response object will be returned: {exc}')
     return response
 
 
-def api_call_with_payload(freshpy_object, method, uri, payload, params=None, headers=None, timeout=30,
-                          show_full_error=True, return_json=True, verify_ssl=True):
+def api_call_with_payload(freshpy_object, method, uri, payload, params=None, headers=None,
+                          timeout=DEFAULT_TIMEOUT_SECONDS, show_full_error=True, return_json=True,
+                          verify_ssl=DEFAULT_SSL_VERIFY):
     """This method performs an API call (POST, PUT, or PATCH) that includes a JSON-formatted payload.
 
     .. version-added:: 3.0.0
@@ -130,7 +139,8 @@ def api_call_with_payload(freshpy_object, method, uri, payload, params=None, hea
              :py:exc:`freshpy.errors.exceptions.PATCHRequestError`,
              :py:exc:`freshpy.errors.exceptions.POSTRequestError`,
              :py:exc:`freshpy.errors.exceptions.PUTRequestError`,
-             :py:exc:`freshpy.errors.exceptions.APIRequestError`
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIConnectionError`
     """
     # Define the parameters as an empty dictionary if none are provided
     params = {} if params is None else params
@@ -178,7 +188,7 @@ def api_call_with_payload(freshpy_object, method, uri, payload, params=None, hea
         except Exception as exc:
             exc_type = errors.handlers.get_exception_type(exc)
             logger.error(f'Failed to convert the API response to JSON format due to the following {exc_type} '
-                         f'exception: {exc}')
+                         f'exception and the full Response object will be returned: {exc}')
     return response
 
 

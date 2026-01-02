@@ -15,6 +15,9 @@ Core Object
 -----------
 Additions to the :doc:`core-object-methods`.
 
+* Added the :py:meth:`freshpy.core.FreshPy.post` method
+* Added the :py:meth:`freshpy.core.FreshPy.put` method
+* Added the :py:meth:`freshpy.core.FreshPy.patch` method
 * Added the :py:meth:`freshpy.core.FreshPy.Tickets.get_ticket_fields` method
 * Added the :py:class:`freshpy.core.FreshPy.Workspaces` inner class with the following methods:
     * :py:meth:`freshpy.core.FreshPy.Workspaces.get_workspace`
@@ -72,6 +75,8 @@ Primary Modules
 ---------------
 Changes to the :doc:`primary modules <primary-modules>`.
 
+* Updated the :py:func:`freshpy.api.get_request_with_retries` function to return the full Response object if the
+  response cannot be successfully converted to JSON rather than just returning error details
 * Updated the :py:func:`freshpy.api._report_failed_attempt` function to use the logging functionality
 * Updated the :py:func:`freshpy.api._raise_exception_for_repeated_timeouts` function to use the logging functionality
 

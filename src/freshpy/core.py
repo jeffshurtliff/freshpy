@@ -226,6 +226,99 @@ class FreshPy(object):
         verify_ssl = self._determine_ssl_verification(verify_ssl)
         return api.get_request_with_retries(self, uri, headers, return_json, verify_ssl=verify_ssl)
 
+    def post(self, uri, payload, params=None, headers=None, timeout=api.DEFAULT_TIMEOUT_SECONDS,
+             show_full_error=True, return_json=True, verify_ssl=None):
+        """This method performs a POST call that includes a JSON-formatted payload.
+
+        .. version-added:: 3.0.0
+
+        :param uri: The API endpoint to query
+        :type uri: str
+        :param payload: The payload to leverage in the API call
+        :type payload: dict
+        :param params: The query parameters (where applicable)
+        :type params: dict, None
+        :param headers: Specific API headers to use when performing the API call
+        :type headers: dict, None
+        :param timeout: The timeout period in seconds (defaults to ``30``)
+        :type timeout: int, str, None
+        :param show_full_error: Determines if the full error message should be displayed (``True`` by default)
+        :type show_full_error: bool
+        :param return_json: Determines if the response should be returned in JSON format (``True`` by default)
+        :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+        :type verify_ssl: bool
+        :returns: The API response in JSON format or as a ``requests`` response object
+        :raises: :py:exc:`freshpy.errors.exceptions.POSTRequestError`,
+                 :py:exc:`freshpy.errors.exceptions.APIRequestError`,
+                 :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+        """
+        verify_ssl = self._determine_ssl_verification(verify_ssl)
+        return api.api_call_with_payload(self, 'post', uri=uri, payload=payload, params=params, headers=headers,
+                                         timeout=timeout, show_full_error=show_full_error, return_json=return_json,
+                                         verify_ssl=verify_ssl)
+
+    def put(self, uri, payload, params=None, headers=None, timeout=api.DEFAULT_TIMEOUT_SECONDS,
+            show_full_error=True, return_json=True, verify_ssl=None):
+        """This method performs a PUT call that includes a JSON-formatted payload.
+
+        .. version-added:: 3.0.0
+
+        :param uri: The API endpoint to query
+        :type uri: str
+        :param payload: The payload to leverage in the API call
+        :type payload: dict
+        :param params: The query parameters (where applicable)
+        :type params: dict, None
+        :param headers: Specific API headers to use when performing the API call
+        :type headers: dict, None
+        :param timeout: The timeout period in seconds (defaults to ``30``)
+        :type timeout: int, str, None
+        :param show_full_error: Determines if the full error message should be displayed (``True`` by default)
+        :type show_full_error: bool
+        :param return_json: Determines if the response should be returned in JSON format (``True`` by default)
+        :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+        :type verify_ssl: bool
+        :returns: The API response in JSON format or as a ``requests`` response object
+        :raises: :py:exc:`freshpy.errors.exceptions.PUTRequestError`,
+                 :py:exc:`freshpy.errors.exceptions.APIRequestError`,
+                 :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+        """
+        verify_ssl = self._determine_ssl_verification(verify_ssl)
+        return api.api_call_with_payload(self, 'put', uri=uri, payload=payload, params=params, headers=headers,
+                                         timeout=timeout, show_full_error=show_full_error, return_json=return_json,
+                                         verify_ssl=verify_ssl)
+
+    def patch(self, uri, payload, params=None, headers=None, timeout=api.DEFAULT_TIMEOUT_SECONDS,
+              show_full_error=True, return_json=True, verify_ssl=None):
+        """This method performs a PATCH call that includes a JSON-formatted payload.
+
+        .. version-added:: 3.0.0
+
+        :param uri: The API endpoint to query
+        :type uri: str
+        :param payload: The payload to leverage in the API call
+        :type payload: dict
+        :param params: The query parameters (where applicable)
+        :type params: dict, None
+        :param headers: Specific API headers to use when performing the API call
+        :type headers: dict, None
+        :param timeout: The timeout period in seconds (defaults to ``30``)
+        :type timeout: int, str, None
+        :param show_full_error: Determines if the full error message should be displayed (``True`` by default)
+        :type show_full_error: bool
+        :param return_json: Determines if the response should be returned in JSON format (``True`` by default)
+        :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+        :type verify_ssl: bool
+        :returns: The API response in JSON format or as a ``requests`` response object
+        :raises: :py:exc:`freshpy.errors.exceptions.PATCHRequestError`,
+                 :py:exc:`freshpy.errors.exceptions.APIRequestError`,
+                 :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+        """
+        verify_ssl = self._determine_ssl_verification(verify_ssl)
+        return api.api_call_with_payload(self, 'patch', uri=uri, payload=payload, params=params, headers=headers,
+                                         timeout=timeout, show_full_error=show_full_error, return_json=return_json,
+                                         verify_ssl=verify_ssl)
+
     class Agents(object):
         """This class includes methods associated with Freshservice agents."""
         def __init__(self, freshpy_object):
