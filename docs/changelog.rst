@@ -38,6 +38,7 @@ Additions to the :doc:`supporting modules <supporting-modules>` are listed below
     * :py:mod:`freshpy.utils.tests.test_log_utils`
     * :py:mod:`freshpy.utils.tests.test_version_utils`
 * Added the new :py:exc:`freshpy.errors.exceptions.InvalidDataTypeError` exception
+* Added the :py:func:`freshpy.utils.core_utils.validate_numeric_value` function
 
 General
 -------

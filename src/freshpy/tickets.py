@@ -39,6 +39,7 @@ def get_ticket(freshpy_object, ticket_number, include=None, verify_ssl=True):
     :returns: JSON data for the given ticket
     :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
     """
+    core_utils.validate_numeric_value(ticket_number, 'ticket_number')
     uri = f'tickets/{ticket_number}'
     uri += _parse_constraints(_include=include)
     return api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
@@ -96,19 +97,24 @@ def get_tickets(freshpy_object, include=None, predefined_filter=None, filters=No
     return api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
 
 
-def get_ticket_fields(freshpy_object, verify_ssl=True):
+def get_ticket_fields(freshpy_object, workspace_id=None, verify_ssl=True):
     """This function retrieves the standard and custom fields that exist for tickets.
 
     .. version-added:: 3.0.0
 
     :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
     :type freshpy_object: class[freshpy.FreshPy]
+    :param workspace_id: The ID of a specific workspace to query (defaults to primary workspace if not specified)
+    :type workspace_id: str, int, None
     :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
     :type verify_ssl: bool
     :returns: Dictionary (JSON) with the ticket field data
     :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
     """
-    uri = 'ticket_fields'
+    uri = 'ticket_form_fields'
+    if workspace_id:
+        core_utils.validate_numeric_value(workspace_id, 'workspace_id')
+        uri += f'?workspace_id={workspace_id}'
     return api.get_request_with_retries(freshpy_object, uri, verify_ssl=verify_ssl)
 
 
