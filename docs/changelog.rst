@@ -11,6 +11,25 @@ v3.0.0.dev0
 Added
 =====
 
+Core Object
+-----------
+Additions to the :doc:`core-object-methods`.
+
+* Added the :py:meth:`freshpy.core.FreshPy.Tickets.get_ticket_fields` method
+* Added the :py:class:`freshpy.core.FreshPy.Workspaces` inner class with the following methods:
+    * :py:meth:`freshpy.core.FreshPy.Workspaces.get_workspace`
+    * :py:meth:`freshpy.core.FreshPy.Workspaces.get_all_workspaces`
+* Added the :py:meth:`freshpy.core.FreshPy._import_workspaces_class` method
+
+Primary Modules
+---------------
+Additions to the :doc:`primary modules <primary-modules>`.
+
+* Added the :py:func:`freshpy.tickets.get_ticket_fields` function
+* Added the :py:mod:`freshpy.workspaces` module with the following functions:
+    * :py:func:`freshpy.workspaces.get_workspace`
+    * :py:func:`freshpy.workspaces.get_all_workspaces`
+
 Supporting Modules
 ------------------
 Additions to the :doc:`supporting modules <supporting-modules>` are listed below.

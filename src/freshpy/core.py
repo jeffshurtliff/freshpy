@@ -12,8 +12,9 @@ import inspect
 
 import freshpy.errors.exceptions
 from . import api, errors
-from . import tickets as tickets_module
 from . import agents as agents_module
+from . import tickets as tickets_module
+from . import workspaces as workspaces_module
 from .utils import log_utils, version
 
 # Initialize logging
@@ -84,6 +85,7 @@ class FreshPy(object):
         # Import inner object classes so their methods can be called from the primary object
         self.agents = self._import_agents_class()
         self.tickets = self._import_tickets_class()
+        self.workspaces = self._import_workspaces_class()
 
     def _import_agents_class(self):
         """This method allows the :py:class:`freshpy.core.FreshPy.Agents` class to be utilized in the core object.
@@ -98,6 +100,13 @@ class FreshPy(object):
         .. version-added:: 1.0.0
         """
         return FreshPy.Tickets(self)
+
+    def _import_workspaces_class(self):
+        """This method allows the :py:class:`freshpy.core.FreshPy.Workspaces` class to be utilized in the core object.
+
+        .. version-added:: 3.0.0
+        """
+        return FreshPy.Workspaces(self)
 
     def _determine_ssl_verification(self, param_value=None):
         """This method checks to determine if SSL verification is enabled at the object or function/method level.
@@ -404,6 +413,61 @@ class FreshPy(object):
                                               per_page=per_page, page=page, requester_email=requester_email,
                                               ticket_type=ticket_type, updated_since=updated_since, ascending=ascending,
                                               descending=descending, verify_ssl=verify_ssl)
+
+        def get_ticket_fields(self, verify_ssl=None):
+            """This method retrieves the standard and custom fields that exist for tickets.
+
+            .. version-added:: 3.0.0
+
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: Dictionary (JSON) with the ticket field data
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.DataMismatchError`
+            """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
+            return tickets_module.get_ticket_fields(self.freshpy_object, verify_ssl=verify_ssl)
+
+    class Workspaces(object):
+        """This class includes methods associated with Freshservice workspaces/clients."""
+        def __init__(self, freshpy_object):
+            """This method initializes the :py:class:`freshpy.core.freshpy.Workspaces` inner class object.
+
+            .. version-added:: 3.0.0
+
+            :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
+            :type freshpy_object: class[freshpy.FreshPy]
+            """
+            self.freshpy_object = freshpy_object
+
+        def get_workspace(self, workspace_id, verify_ssl=None):
+            """This method returns data for a specific workspace.
+
+            .. version-added:: 3.0.0
+
+            :param workspace_id: The ID value of the workspace
+            :type workspace_id: str, int
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: Dictionary (JSON) with the workspace data
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+            """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
+            return workspaces_module.get_workspace(self.freshpy_object, workspace_id, verify_ssl=verify_ssl)
+
+        def get_all_workspaces(self, verify_ssl=None):
+            """This method returns data on all workspaces.
+
+            .. version-added:: 3.0.0
+
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: Dictionary (JSON) with the workspace data
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.DataMismatchError`
+            """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
+            return workspaces_module.get_all_workspaces(self.freshpy_object, verify_ssl=verify_ssl)
 
     def __del__(self):
         """This method fully destroys the instance.
