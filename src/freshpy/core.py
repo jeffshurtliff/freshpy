@@ -4,7 +4,7 @@
 :Synopsis:          Defines the core freshpy object used to interface with the Freshservice API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     31 Dec 2025
+:Modified Date:     02 Dec 2026
 """
 
 import os
@@ -60,7 +60,7 @@ class FreshPy(object):
         if api_key:
             logger.debug('The api_key value was defined via parameter when instantiating the core object')
         elif 'api_key' in self._env_variables and self._env_variables.get('api_key'):
-            domain = self._env_variables.get('api_key')
+            api_key = self._env_variables.get('api_key')
             logger.debug('The api_key value was defined as an environment variable')
         else:
             logger.critical('The api_key value could not be defined and the object cannot be instantiated')
