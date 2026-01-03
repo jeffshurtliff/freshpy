@@ -34,6 +34,8 @@ Additions to the :doc:`primary modules <primary-modules>`.
 * Added the :py:mod:`freshpy.workspaces` module with the following functions:
     * :py:func:`freshpy.workspaces.get_workspace`
     * :py:func:`freshpy.workspaces.get_all_workspaces`
+* Added the :py:mod:`freshpy.objects` module with the following functions:
+    * :py:func:`freshpy.objects.get_all_custom_objects`
 * Added the :py:func:`freshpy.api.api_call_with_payload` function
 * Added the :py:func:`freshpy.api._raise_exception_for_api_method` function
 * Added the :py:func:`freshpy.agents.get_agent_role` function
