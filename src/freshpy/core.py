@@ -4,7 +4,7 @@
 :Synopsis:          Defines the core freshpy object used to interface with the Freshservice API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     02 Dec 2026
+:Modified Date:     03 Dec 2026
 """
 
 import os
@@ -13,6 +13,7 @@ import inspect
 import freshpy.errors.exceptions
 from . import api, errors
 from . import agents as agents_module
+from . import objects as objects_module
 from . import tickets as tickets_module
 from . import workspaces as workspaces_module
 from .utils import log_utils, version
@@ -84,6 +85,7 @@ class FreshPy(object):
 
         # Import inner object classes so their methods can be called from the primary object
         self.agents = self._import_agents_class()
+        self.objects = self._import_objects_class()
         self.tickets = self._import_tickets_class()
         self.workspaces = self._import_workspaces_class()
 
@@ -93,6 +95,13 @@ class FreshPy(object):
         .. version-added:: 2.0.0
         """
         return FreshPy.Agents(self)
+
+    def _import_objects_class(self):
+        """This method allows the :py:class:`freshpy.core.FreshPy.Objects` class to be utilized in the core object.
+
+        .. version-added:: 3.0.0
+        """
+        return FreshPy.Objects(self)
 
     def _import_tickets_class(self):
         """This method allows the :py:class:`freshpy.core.FreshPy.Tickets` class to be utilized in the core object.
@@ -485,6 +494,53 @@ class FreshPy(object):
             """
             verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return agents_module.get_all_agent_groups(self.freshpy_object, verify_ssl=verify_ssl)
+
+    class Objects(object):
+        """This class includes methods associated with Freshservice custom objects."""
+        def __init__(self, freshpy_object):
+            """This method initializes the :py:class:`freshpy.core.freshpy.Objects` inner class object.
+
+            .. version-added:: 3.0.0
+
+            :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
+            :type freshpy_object: class[freshpy.FreshPy]
+            """
+            self.freshpy_object = freshpy_object
+
+        def get_custom_object(self, object_id, verify_ssl=None):
+            """This method retrieves a specific custom object.
+
+            .. version-added:: 3.0.0
+
+            :param object_id: The ID of the custom object
+            :type object_id: str, int
+            :param verify_ssl:Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: Dictionary (JSON) with the custom object data
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+                     :py:exc:`freshpy.errors.exceptions.APIRequestError`
+            """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
+            return objects_module.get_custom_object(self.freshpy_object, object_id=object_id, verify_ssl=verify_ssl)
+
+        def get_all_custom_objects(self, workspace_id=None, verify_ssl=True):
+            """This method retrieves the custom objects associated with a Freshservice instance.
+
+            .. version-added:: 3.0.0
+
+            :param workspace_id: The ID value of the workspace (defaults to primary workspace)
+            :type workspace_id: str, int, None
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: Dictionary (JSON) with the custom object data
+            :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+                     :py:exc:`freshpy.errors.exceptions.APIRequestError`
+            """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
+            return objects_module.get_all_custom_objects(self.freshpy_object, workspace_id=workspace_id,
+                                                         verify_ssl=verify_ssl)
 
     class Tickets(object):
         """This class includes methods associated with Freshservice tickets."""

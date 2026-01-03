@@ -24,6 +24,9 @@ Additions to the :doc:`core-object-methods`.
 * Added the :py:class:`freshpy.core.FreshPy.Workspaces` inner class with the following methods:
     * :py:meth:`freshpy.core.FreshPy.Workspaces.get_workspace`
     * :py:meth:`freshpy.core.FreshPy.Workspaces.get_all_workspaces`
+* Added the :py:class:`freshpy.core.FreshPy.Objects` inner class with the following methods:
+    * :py:meth:`freshpy.core.FreshPy.Objects.get_custom_object`
+    * :py:meth:`freshpy.core.FreshPy.Objects.get_all_custom_objects`
 * Added the :py:meth:`freshpy.core.FreshPy._import_workspaces_class` method
 
 Primary Modules
