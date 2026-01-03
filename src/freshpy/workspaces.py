@@ -26,7 +26,9 @@ def get_workspace(freshpy_object, workspace_id, verify_ssl=True):
     :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
     :type verify_ssl: bool
     :returns: Dictionary (JSON) with the workspace data
-    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+             :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`
     """
     core_utils.validate_numeric_value(workspace_id, 'workspace_id')
     uri = f'workspaces/{workspace_id}'
@@ -43,7 +45,9 @@ def get_all_workspaces(freshpy_object, verify_ssl=True):
     :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
     :type verify_ssl: bool
     :returns: Dictionary (JSON) with the workspace data
-    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+             :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`
     """
     uri = 'workspaces'
     return api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)
