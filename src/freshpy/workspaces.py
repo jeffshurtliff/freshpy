@@ -4,7 +4,7 @@
 :Synopsis:          Functions for interacting with Freshservice workspaces (aka clients)
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     02 Jan 2026
+:Modified Date:     03 Jan 2026
 """
 
 from . import api, errors
@@ -28,7 +28,7 @@ def get_workspace(freshpy_object, workspace_id, verify_ssl=True):
     :returns: Dictionary (JSON) with the workspace data
     :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
     """
-    # TODO: Validate that a valid ID (integer) is provided
+    core_utils.validate_numeric_value(workspace_id, 'workspace_id')
     uri = f'workspaces/{workspace_id}'
     return api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)
 
