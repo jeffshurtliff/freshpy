@@ -649,6 +649,37 @@ class FreshPy(object):
             verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
             return tickets_module.get_ticket_fields(self.freshpy_object, workspace_id=workspace_id, verify_ssl=verify_ssl)
 
+        def get_ticket_field(self, field_id=None, field_label=None, field_name=None, match_case=True,
+                             ticket_data=None, workspace_id=None, verify_ssl=None):
+            """This method retrieves a specific ticket field based on a provided ID, Label, and/or Name.
+
+            .. version-added:: 3.0.0
+
+            :param field_id: The ``id`` value for the field
+            :type field_id: int, str, None
+            :param field_label: The ``label`` value for the field
+            :type field_label: str, None
+            :param field_name: The ``name`` value for the field
+            :type field_name: str, None
+            :param match_case: Determines if the ``label`` value should be case-sensitive (``True`` by default)
+            :type match_case: bool
+            :param ticket_data: Dictionary or list containing all ticket field data (optional)
+            :type ticket_data: dict, list, None
+            :param workspace_id: The ID of a specific workspace (defaults to primary workspace if not specified)
+            :type workspace_id: str, int, None
+            :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+            :type verify_ssl: bool
+            :returns: A JSON-formatted dictionary with the field data (or an empty dictionary if the field is not found)
+            :raises: :py:exc:`freshpy.errors.exceptions.InvalidPredefinedFilterError`,
+                     :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+                     :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+                     :py:exc:`freshpy.errors.exceptions.APIRequestError`
+            """
+            verify_ssl = self.freshpy_object._determine_ssl_verification(verify_ssl)
+            return tickets_module.get_ticket_field(self.freshpy_object, field_id=field_id, field_label=field_label,
+                                                   field_name=field_name, match_case=match_case, ticket_data=ticket_data,
+                                                   workspace_id=workspace_id, verify_ssl=verify_ssl)
+
     class Workspaces(object):
         """This class includes methods associated with Freshservice workspaces/clients."""
         def __init__(self, freshpy_object):

@@ -18,34 +18,42 @@ Additions to the :doc:`core-object-methods`.
 * Added the :py:meth:`freshpy.core.FreshPy.post` method
 * Added the :py:meth:`freshpy.core.FreshPy.put` method
 * Added the :py:meth:`freshpy.core.FreshPy.patch` method
-* Added the :py:meth:`freshpy.core.FreshPy.Agents.get_agent_role` method
-* Added the :py:meth:`freshpy.core.FreshPy.Agents.get_all_agent_roles` method
-* Added the :py:meth:`freshpy.core.FreshPy.Tickets.get_ticket_fields` method
+* Added the following methods to the :py:class:`freshpy.core.FreshPy.Agents` inner class:
+    * :py:meth:`freshpy.core.FreshPy.Agents.get_agent_role`
+    * :py:meth:`freshpy.core.FreshPy.Agents.get_all_agent_roles`
+* Added the following methods to the :py:class:`freshpy.core.FreshPy.Tickets` inner class:
+    * :py:meth:`freshpy.core.FreshPy.Tickets.get_ticket_fields`
+    * :py:meth:`freshpy.core.FreshPy.Tickets.get_ticket_field`
 * Added the :py:class:`freshpy.core.FreshPy.Workspaces` inner class with the following methods:
     * :py:meth:`freshpy.core.FreshPy.Workspaces.get_workspace`
     * :py:meth:`freshpy.core.FreshPy.Workspaces.get_all_workspaces`
 * Added the :py:class:`freshpy.core.FreshPy.Objects` inner class with the following methods:
     * :py:meth:`freshpy.core.FreshPy.Objects.get_custom_object`
     * :py:meth:`freshpy.core.FreshPy.Objects.get_all_custom_objects`
+* Added the :py:meth:`freshpy.core.FreshPy._import_objects_class` method
 * Added the :py:meth:`freshpy.core.FreshPy._import_workspaces_class` method
 
 Primary Modules
 ---------------
 Additions to the :doc:`primary modules <primary-modules>`.
 
-* Added the :py:func:`freshpy.tickets.get_ticket_fields` function
 * Added the :py:mod:`freshpy.workspaces` module with the following functions:
     * :py:func:`freshpy.workspaces.get_workspace`
     * :py:func:`freshpy.workspaces.get_all_workspaces`
 * Added the :py:mod:`freshpy.objects` module with the following functions:
     * :py:func:`freshpy.objects.get_custom_object`
     * :py:func:`freshpy.objects.get_all_custom_objects`
-* Added the :py:func:`freshpy.api.api_call_with_payload` function
-* Added the :py:func:`freshpy.api._raise_exception_for_api_method` function
-* Added the :py:func:`freshpy.agents.get_agent_role` function
-* Added the :py:func:`freshpy.agents.get_all_agent_roles` function
-* Added the :py:func:`freshpy.agents.get_agent_group` function
-* Added the :py:func:`freshpy.agents.get_all_agent_groups` function
+* Added the following functions to the :py:mod:`freshpy.api` module:
+    * :py:func:`freshpy.api.api_call_with_payload`
+    * :py:func:`freshpy.api._raise_exception_for_api_method`
+* Added the following functions to the :py:mod:`freshpy.agents` module:
+    * :py:func:`freshpy.agents.get_agent_role`
+    * :py:func:`freshpy.agents.get_all_agent_roles`
+    * :py:func:`freshpy.agents.get_agent_group`
+    * :py:func:`freshpy.agents.get_all_agent_groups`
+* Added the following functions to the :py:mod:`freshpy.tickets` module:
+    * A:py:func:`freshpy.tickets.get_ticket_fields`
+    * A:py:func:`freshpy.tickets.get_ticket_field`
 
 Supporting Modules
 ------------------

@@ -4,7 +4,7 @@
 :Synopsis:          Functions for interacting with Freshservice tickets
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     02 Jan 2026
+:Modified Date:     03 Jan 2026
 """
 
 from . import api, errors
@@ -23,6 +23,9 @@ FILTER_LOGIC_OPERATORS = ['AND', 'OR']
 def get_ticket(freshpy_object, ticket_number, include=None, verify_ssl=True):
     """This function returns the data for a specific ticket.
 
+    .. version-changed:: 3.0.0
+       The ticket number is now validated before being used in the API call.
+
     .. version-changed:: 1.1.0
        Added the ability to disable SSL verification on API calls.
 
@@ -37,7 +40,9 @@ def get_ticket(freshpy_object, ticket_number, include=None, verify_ssl=True):
     :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
     :type verify_ssl: bool
     :returns: JSON data for the given ticket
-    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+             :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`
     """
     core_utils.validate_numeric_value(ticket_number, 'ticket_number')
     uri = f'tickets/{ticket_number}'
@@ -84,7 +89,9 @@ def get_tickets(freshpy_object, include=None, predefined_filter=None, filters=No
     :type verify_ssl: bool
     :returns: A list of JSON objects for tickets
     :raises: :py:exc:`freshpy.errors.exceptions.InvalidPredefinedFilterError`,
-             :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+             :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+             :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`
     """
     uri = 'tickets'
     if filters:
@@ -109,13 +116,90 @@ def get_ticket_fields(freshpy_object, workspace_id=None, verify_ssl=True):
     :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
     :type verify_ssl: bool
     :returns: Dictionary (JSON) with the ticket field data
-    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`
+    :raises: :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+             :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`
     """
     uri = 'ticket_form_fields'
     if workspace_id:
         core_utils.validate_numeric_value(workspace_id, 'workspace_id')
         uri += f'?workspace_id={workspace_id}'
     return api.get_request_with_retries(freshpy_object, uri=uri, verify_ssl=verify_ssl)
+
+
+def get_ticket_field(freshpy_object, field_id=None, field_label=None, field_name=None, match_case=True,
+                     ticket_data=None, workspace_id=None, verify_ssl=True):
+    """This function retrieves a specific ticket field based on a provided ID, Label, and/or Name.
+
+    .. version-added:: 3.0.0
+
+    :param freshpy_object: The core :py:class:`freshpy.FreshPy` object
+    :type freshpy_object: class[freshpy.FreshPy]
+    :param field_id: The ``id`` value for the field
+    :type field_id: int, str, None
+    :param field_label: The ``label`` value for the field
+    :type field_label: str, None
+    :param field_name: The ``name`` value for the field
+    :type field_name: str, None
+    :param match_case: Determines if the ``label`` value should be case-sensitive (``True`` by default)
+    :type match_case: bool
+    :param ticket_data: Dictionary or list containing all ticket field data (optional)
+    :type ticket_data: dict, list, None
+    :param workspace_id: The ID of a specific workspace (defaults to primary workspace if not specified)
+    :type workspace_id: str, int, None
+    :param verify_ssl: Determines if SSL verification should occur (``True`` by default)
+    :type verify_ssl: bool
+    :returns: A JSON-formatted dictionary with the field data (or an empty dictionary if the field is not found)
+    :raises: :py:exc:`freshpy.errors.exceptions.InvalidPredefinedFilterError`,
+             :py:exc:`freshpy.errors.exceptions.APIConnectionError`,
+             :py:exc:`freshpy.errors.exceptions.GETRequestError`,
+             :py:exc:`freshpy.errors.exceptions.APIRequestError`
+    """
+    # Retrieve all ticket fields as there is not an endpoint to retrieve just a single field
+    all_fields = None
+    if ticket_data:
+        if (isinstance(ticket_data, dict) and 'ticket_fields' in ticket_data) or isinstance(ticket_data, list):
+            all_fields = ticket_data
+        else:
+            logger.error('The provided ticket_data is not in a valid format and will be ignored')
+    if not all_fields:
+        all_fields = get_ticket_fields(freshpy_object, workspace_id=workspace_id, verify_ssl=verify_ssl)
+    all_fields = all_fields['ticket_fields'] if not isinstance(all_fields, list) else all_fields
+
+    # Raise an exception if no lookup value was provided
+    if not any((field_id, field_label, field_name)):
+        error_msg = 'You must provide a lookup value (field_id, field_label, or field_name) to retrieve a ticket field'
+        logger.error(error_msg)
+        raise errors.exceptions.MissingRequiredDataError(error_msg)
+
+    # Determine which lookup values are defined
+    defined_lookup_values = {}
+    if field_id:
+        core_utils.validate_numeric_value(field_id, 'field_id')
+        defined_lookup_values['id'] = int(field_id)
+    if field_label:
+        defined_lookup_values['label'] = field_label
+    if field_name:
+        defined_lookup_values['name'] = field_name
+
+    # Find the requested field based on the lookup value provided
+    requested_field = {}
+    for field in all_fields:
+        for lookup_key, lookup_value in defined_lookup_values.items():
+            if lookup_key == 'label' and lookup_key in field and not match_case:
+                if field[lookup_key].lower() == lookup_value.lower():
+                    requested_field = field
+                    break
+            elif lookup_key in field and field[lookup_key] == lookup_value:
+                requested_field = field
+                break
+        if requested_field:
+            break
+
+    # Return the located field data (or an empty dict if not found)
+    if not requested_field:
+        logger.error('Failed to find the requested ticket field based on the lookup criteria provided')
+    return requested_field
 
 
 def _parse_filters(_filters=None, _logic='AND'):
