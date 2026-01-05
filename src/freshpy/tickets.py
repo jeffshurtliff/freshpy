@@ -4,7 +4,7 @@
 :Synopsis:          Functions for interacting with Freshservice tickets
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     03 Jan 2026
+:Modified Date:     05 Jan 2026
 """
 
 from . import api, errors
@@ -200,6 +200,78 @@ def get_ticket_field(freshpy_object, field_id=None, field_label=None, field_name
     if not requested_field:
         logger.error('Failed to find the requested ticket field based on the lookup criteria provided')
     return requested_field
+
+
+def create_ticket(freshpy_object, subject=None, description=None, requester_email=None, priority=None, status=None,
+                  cc_emails=None, custom_fields=None, workspace_id=None, ticket_details=None, verify_ssl=True):
+    # TODO: Add docstring
+
+    # Leverage the provided ticket details when applicable
+    ticket_details = {} if not ticket_details else ticket_details
+    # TODO: Allow a typed dict to optionally be provided instead of a raw dict
+    if ticket_details and not isinstance(ticket_details, dict):
+        logger.error('The provided ticket_details are not in a valid format and will be ignored')
+        ticket_details = {}
+
+    # TODO: Add validation (optionally?) that required fields are defined before making API call
+
+    # Evaluate the subject and add to payload when defined
+    if subject:
+        core_utils.validate_data_type(subject, str, 'subject')
+        ticket_details['subject'] = subject
+
+    # Evaluate the description and add to payload when defined
+    if description:
+        core_utils.validate_data_type(description, str, 'description')
+        ticket_details['description'] = description
+
+    # Evaluate the requester email and add to payload when defined
+    if requester_email:
+        core_utils.validate_data_type(requester_email, str, 'requester_email')
+        ticket_details['email'] = requester_email
+
+    # Evaluate the priority and add to payload when defined
+    if priority:
+        # TODO: Add functionality to provide more than just an integer
+        core_utils.validate_data_type(priority, int, 'priority')
+        ticket_details['priority'] = priority
+
+    # Evaluate the status and add to payload when defined
+    if status:
+        # TODO: Add functionality to provide more than just an integer
+        core_utils.validate_data_type(status, int, 'status')
+        ticket_details['status'] = status
+
+    # Evaluate the CC emails and add to payload when defined
+    if cc_emails:
+        # Ensure the data type is correct
+        if isinstance(cc_emails, str):
+            cc_emails = [cc_emails]
+            ticket_details['cc_emails'] = cc_emails
+        elif core_utils.is_iterable(cc_emails) and core_utils.is_data_type(cc_emails, (tuple, set)):
+            cc_emails = list(cc_emails)
+            ticket_details['cc_emails'] = cc_emails
+        elif isinstance(cc_emails, list):
+            ticket_details['cc_emails'] = cc_emails
+        else:
+            error_msg = "The 'cc_emails' parameter is not an appropriate data type and will be ignored"
+            logger.error(error_msg)
+
+    # Add custom fields to the payload if defined and in correct format
+    if custom_fields:
+        core_utils.validate_data_type(custom_fields, dict, 'custom_fields')
+        ticket_details['custom_fields'] = custom_fields
+
+    # Add the workspace ID if present and in correct format
+    if workspace_id:
+        core_utils.validate_data_type(workspace_id, (int, str), 'workspace_id')
+        if isinstance(workspace_id, str):
+            core_utils.validate_numeric_value(workspace_id, 'workspace_id')
+            workspace_id = int(workspace_id)
+        ticket_details['workspace_id'] = workspace_id
+
+    # Perform the API call to create the ticket
+    return api.api_call_with_payload(freshpy_object, 'post', 'tickets', payload=ticket_details, verify_ssl=verify_ssl)
 
 
 def _parse_filters(_filters=None, _logic='AND'):

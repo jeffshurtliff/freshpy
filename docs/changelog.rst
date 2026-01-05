@@ -54,6 +54,7 @@ Additions to the :doc:`primary modules <primary-modules>`.
 * Added the following functions to the :py:mod:`freshpy.tickets` module:
     * A:py:func:`freshpy.tickets.get_ticket_fields`
     * A:py:func:`freshpy.tickets.get_ticket_field`
+    * A:py:func:`freshpy.tickets.create_ticket`
 
 Supporting Modules
 ------------------
