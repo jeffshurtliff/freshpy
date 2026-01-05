@@ -66,7 +66,11 @@ Additions to the :doc:`supporting modules <supporting-modules>` are listed below
     * :py:exc:`freshpy.errors.exceptions.InvalidDataTypeError`
     * :py:exc:`freshpy.errors.exceptions.PATCHRequestError`
 * Added the :py:func:`freshpy.errors.handlers.get_exception_type` function
-* Added the :py:func:`freshpy.utils.core_utils.validate_numeric_value` function
+* Added the following functions to the :py:mod:`freshpy.utils.core_utils` module:
+    * :py:func:`freshpy.utils.core_utils.is_iterable`
+    * :py:func:`freshpy.utils.core_utils.is_data_type`
+    * :py:func:`freshpy.utils.core_utils.validate_data_type`
+    * :py:func:`freshpy.utils.core_utils.validate_numeric_value`
 * Added the :py:mod:`freshpy.models.enums` module with defined strongly-typed, immutable enumerations for
   ticket-related constants
 
